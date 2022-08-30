@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="container-fluid bg-black text-center">
+    <h1 class="text-info">List</h1>
+    
+    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+    
+        {% for shield in shields %}
+        <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
+        title="{{ shield.name }} [{{ shield.type }}] <img src='{% static '/images' %}{{ shield.img_URL }}'>"
+        data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
+        data-bs-content="Attack Type: {{ shield.attack_type }}<br>
+        Damage Type: {{ shield.damage_type }}<br>
+        Physical Defense: {{ shield.physical_resistance }}<br>
+        Magic Defense: {{ shield.magical_resistance }}<br>
+        Physical Damage: {{ shield.physical_damage }}<br>
+        Magic Damage: {{ shield.magical_damage }}<br>
+        Crit Chance: +{{ shield.critical_chance }}%<br>
+        Crit Damage: x{{ shield.critical_damage }}<br>
+        Dodge: +{{ shield.dodge }}%<br>
+        Roll Timer: +{{ shield.roll }}s">{{ shield.name }}</a>
+        {% endfor %}
+    </div>
+
+<div class="container-fluid text-center">
+    <div class="col-12 bg-black p1 border border-info">
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-4 borderless">
+        <h1 class="text-info">Greetings, Player!</h1>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 my-4 borderless">
+        <p>
+            <button class="btn btn-outline-info btn-lg mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Ascean va'Esai Competitors
+            </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body bg-black">
+        <table class="table table-hover bg-black table-bordered border-info">
+            <thead>
+                <tr>
+                    <th class="text-info">Name</th>
+                    <th class="text-info">Description</th>
+                    <th class="text-info">Main shield</th>
+                    <th class="text-info">Off-Weapon</th>
+                    <th class="text-info">Shield</th>
+                    <th class="text-info">Edit?</th>
+                    <th class="text-info">Remove!</th>
+                    <th class="text-info">Delete?!</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                    <td><a href=""></a></td>
+                    <td class="text-info"></td>
+                    <td class="text-info"><br><img src=''></td>
+                    <td class="text-info"><br><img src=''></td>
+                    <td class="text-info"><br><img src=''></td>
+                    <td>
+                        <form action="" method="POST">
+                            <button class="btn btn-outline-light btn-sm" id="editChar" type="submit">Edit </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="" method="POST">
+                            <button class="btn btn-outline-light btn-sm" id="remChar" type="submit">Remove button>
+                        </form>
+                    </td>
+                    <td>
+                            {% comment %} if (user?._id.equals(c.user)) {  {% endcomment %}
+                        <form action="" method="POST">
+                            <button class="btn btn-outline-danger btn-sm" id="charID" type="submit">Delete </button>
+                        </form>
+
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+</div>
+
+{% endblock %}

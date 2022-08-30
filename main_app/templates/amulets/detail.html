@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>{{ amulet.name }} Details</h1>
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">{{ amulet.name }} <img src="{% static "/images" %}{{ amulet.img_URL }}"></span>
+        <p>Physical Defense: {{ amulet.physical_resistance }}</p>
+        <p>Magic Defense: {{ amulet.magical_resistance }}</p>
+        <p>Description: {{ amulet.physical_damage }}</p>
+        <p>Description: {{ amulet.magical_damage }}</p>
+        <p>Description: {{ amulet.critical_chance }}</p>
+        <p>Description: {{ amulet.critical_damage }}</p>
+        <p>Dodge: {{ amulet.dodge }}</p>
+        <p>Roll Timer: {{ amulet.roll }}</p>
+    </div>
+</div>
+
+{% endblock %}

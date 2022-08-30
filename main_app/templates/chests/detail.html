@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">{{ chest.name }} <img src="{% static "/images" %}{{ chest.img_URL }}"></span>
+        <p>Type: {{ chest.type }}</p>
+        <p>Physical Defense: {{ chest.physical_resistance }}</p>
+        <p>Magic Defense: {{ chest.magical_resistance }}</p>
+        <p>Description: {{ chest.physical_damage }}</p>
+        <p>Description: {{ chest.magical_damage }}</p>
+        <p>Description: {{ chest.critical_chance }}</p>
+        <p>Description: {{ chest.critical_damage }}</p>
+        <p>Dodge: {{ chest.dodge }}</p>
+        <p>Roll Timer: {{ chest.roll }}</p>
+    </div>
+</div>
+
+{% endblock %}

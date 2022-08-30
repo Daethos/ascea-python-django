@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+{% for character in characters %}
+<div class="card">
+    <!-- add this single line below -->
+    <a href="{% url 'detail.character' character.id %}">
+    <div class="card-content">
+        <span class="card-title">{{ character.name }}</span>
+        <p>Type: {{ shield.type }}</p>
+        <p>Physical Defense: {{ character.attack_type }}</p>
+        <p>Magic Defense: {{ character.damage_type }}</p>
+        <p>Description: {{ character.physical_damage }}</p>
+        <p>Description: {{ character.magical_damage }}</p>
+        <p>Description: {{ character.critical_chance }}</p>
+        <p>Description: {{ character.critical_damage }}</p>
+        <p>Dodge: {{ character.dodge }}</p>
+        <p>Roll Timer: {{ character.roll }}</p>
+    </div>
+    </a>
+</div>
+{% endfor %}
+
+<div class="container-fluid bg-black">
+<div class="col-12 bg-black p1 border border-info text-center">
+<div class="row">
+    <div class="col-4 offset-2 bg-black text-center offset-1 p-4 mt-1 borderless">
+        <h1 class="text-info"></h1>
+        <h2 class="text-info"><a href="">Ascea: Last Duel</a></h1>
+    </div>
+    <div class="col-2 offset-1 bg-black p2 mt-3 borderless text-center">
+        <table class="table table-black table-borderless">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th><img src=""></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src=""></td>
+                    <td><img src=""></td>
+                    <td><img src=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img src=""></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-8 offset-2 bg-black text-center p-2 border border-info">
+        <h5 class="text-white"></h5>
+    </div>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 mb-4 mt-4 border-info">
+        <table class="table table-hover table-bordered border-info">
+            <thead>
+                <tr>
+                    <th class="text-info">Weapon</th>
+                    <th class="text-info">Grip Style</th>
+                    <th class="text-info">Attack Type</th>
+                    <th class="text-info">Damage Type</th>
+                    <th class="text-info">Physical Damage</th>
+                    <th class="text-info">Magic Damage</th>
+                    <th class="text-info">Crit Chance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-white" id="char-weap-name"></td>
+                    <td class="text-white" id="char-grip"></td>
+                    <td class="text-white" id="char-att-type"></td>
+                    <td class="text-white" id="char-dam-type"></td>
+                    <td class="text-white" id="char-phys-dam"></td>
+                    <td class="text-white" id="char-mag-dam"></td>
+                    <td class="text-white" id="char-weap-crit"></td>
+                </tr>   
+            </tbody>
+            </table>
+            <table class="table table-hover table-bordered border-info">
+                <thead>
+                    <tr>
+                        <th class="text-info">Shield</th>
+                        <th class="text-info">Physical Defense</th>
+                        <th class="text-info">Magic Defense</th>
+                        <th class="text-info">Roll Timer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-white" id="char-shield-name"></td>
+                        <td class="text-white" id="char-shield-phys"></td>
+                        <td class="text-white" id="char-shield-mag"></td>
+                        <td class="text-white" id="char-shield-roll"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-hover table-bordered border-info">
+                <thead>
+                    <tr>
+                        <th class="text-info">Armor</th>
+                        <th class="text-info">Physical Defense</th>
+                        <th class="text-info">Magic Defense</th>
+                        <th class="text-info">Dodge Chance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-white" id="char-armor-name"></td>
+                        <td class="text-white" id="char-armor-phys"></td>
+                        <td class="text-white" id="char-armor-mag"></td>
+                        <td class="text-white" id="char-armor-dodge"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button class="col-4 btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExampleChar" aria-expanded="false" aria-controls="collapseExampleChar">
+            Character Modifiers
+        </button>
+        </p>
+        <div class="collapse" id="collapseExampleChar">
+        <div class="col-10 bg-black text-center offset-1 p-2 mb-4 mt-4 border-outline-info">
+        <div class="card card-body bg-black">
+            <table class="table table-hover table-bordered border-info">
+                <thead>
+                    <tr>
+                        <th class="text-info">Weapon</th>
+                        <th class="text-info">Physical Damage</th>
+                        <th class="text-info">Magic Damage</th>
+                        <th class="text-info">Crit Chance</th>
+                        <th class="text-info">Crit Damage</th>
+                        <th class="text-info">Special</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-white"></td>
+                        <td class="text-white" id="end-phys-dam"></td>
+                        <td class="text-white" id="end-mag-dam"></td>
+                        <td class="text-white" id="end-weap-crit"></td>
+                        <td class="text-white" id="end-crit-dam">100</td>
+                        <td class="text-white" id="end-weap-special"></td>
+                    </tr>   
+                </tbody>
+            </table>
+            <table class="table table-hover table-bordered border-info">
+                <thead>
+                    <tr>
+                        <th class="text-info">Shield</th>
+                        <th class="text-info">Postured Physical Defense</th>
+                        <th class="text-info">Postured Magic Defense</th>
+                        <th class="text-info">Roll Timer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-white" id="char-shield-name">{{ characters.shield.name }}</td>
+                        <td class="text-white" id="end-shield-phys"></td>
+                        <td class="text-white" id="end-shield-mag"></td>
+                        <td class="text-white" id="char-shield-roll"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-hover table-bordered border-info">
+                <thead>
+                    <tr>
+                        <th class="text-info">Armor</th>
+                        <th class="text-info">Style</th>
+                        <th class="text-info">Physical Defense</th>
+                        <th class="text-info">Magic Defense</th>
+                        <th class="text-info">Dodge Chance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-white"></td>
+                        <td class="text-white" id="char-armor-type"></td>
+                        <td class="text-white" id="end-armor-phys"></td>
+                        <td class="text-white" id="end-armor-mag"></td>
+                        <td class="text-white" id="end-armor-dodge"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+        </div>
+</div>
+</div>
+
+{% endblock %}

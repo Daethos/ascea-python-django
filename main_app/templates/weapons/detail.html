@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1 class="text-info">{{ weapon.name }} Details</h1>
+<div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+<div class="card">
+    <div class="card-content bg-info">
+        <h1 class="card-title">{{ weapon.name }} [{{ weapon.type }}] <img src="{% static "/images" %}{{ weapon.img_URL }}" height="64px" width="64px"></h1>
+        <h3>Grip Style: {{ weapon.grip }}</h3>
+        <h3>Attack Type: {{ weapon.attack_type }}</h3>
+        <h3>Damage Type: {{ weapon.damage_type }}</h3>
+        {% if physical_damage > 0 %}
+        <h3>Physical Damage: {{ weapon.physical_damage }}</h3>
+        {% endif %}
+        {% if magical_damage > 0 %}
+        <h3>Magic Damage: {{ weapon.magical_damage }}</h3>
+        {% endif %}
+        <h3>Crit Chance: +{{ weapon.critical_chance }}%</h3>
+        <h3>Crit Damage: {{ weapon.critical_damage }}x</h3>
+        <h3>Dodge: +{{ weapon.dodge }}%</h3>
+        <h3>Roll Timer: +{{ weapon.roll }}s</h3>
+    </div>
+</div>
+</div>
+
+{% endblock %}

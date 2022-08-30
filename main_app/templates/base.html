@@ -1,0 +1,66 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+{% comment %} <script defer src="{% static 'js/app.js' %}"></script> {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ascea</title>
+    <link defer href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-black">
+        <div class="container-fluid">
+            <a class="navbar-brand text-info" href="{% url 'about' %}">Ascean va'Esai</a>
+            <button class="navbar-toggler bg-info" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active text-info" aria-current="page" href="">Ascea: Last Duel</a>
+                </li>
+                    {% for profile in profiles %}
+                    <li class="nav-item">
+                        <a class="nav-link active text-info" aria-current="page" href="{% url 'detail.profile' profile.id %}">{{ profile.name }}</a>
+                    </li>
+                    {% endfor %}
+                    <li class="nav-item">
+                        <a class="nav-link active text-info" href="{% url 'characters_create' %}">New Ascean</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle text-info" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        The va'Esai
+                        </a>
+                        {% for character in characters %}
+                <ul class="dropdown-menu bg-black">
+                <li><a class="dropdown-item text-info" href="{% url 'detail.character' character.id %}">{{ character.name }}</a></li>
+                </ul>
+                {% endfor %}
+                </li>
+                </ul>
+            </div>
+        </div>
+        <nav class="navbar bg-black">
+            <div class="container-fluid">
+                <a class="btn btn-outline-danger" href="/logout">Logout</a>
+            </div>
+        </nav>
+    </nav>
+</header>
+
+    {% block content %}
+    {% endblock %}
+
+<footer class="page-footer">
+    <div class="right">All Rights Reserved, &copy; 2022 Silly Goose &nbsp;</div>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script defer src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+<script defer src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

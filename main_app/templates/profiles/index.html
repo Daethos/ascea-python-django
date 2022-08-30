@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>Character List</h1>
+
+{% for profile in profiles %}
+<div class="card">
+    <!-- add this single line below -->
+    <a href="{% url 'detail.profile' profile.id %}">
+    <div class="card-content">
+        <span class="card-title">{{ profile.name }}</span>
+        <p>{{ profile.description }}</p>
+    </div>
+    </a>
+</div>
+{% endfor %}
+
+<div class="container-fluid text-center">
+    <div class="col-12 bg-black p1 border border-info">
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-4 borderless">
+        <h1 class="text-info">Greetings, Player!</h1>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 my-4 borderless">
+        <p>
+            <button class="btn btn-outline-info btn-lg mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Ascean va'Esai Competitors
+            </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body bg-black">
+        <table class="table table-hover bg-black table-bordered border-info">
+            <thead>
+                <tr>
+                    <th class="text-info">Name</th>
+                    <th class="text-info">Description</th>
+                    <th class="text-info">Main Weapon</th>
+                    <th class="text-info">Off-Weapon</th>
+                    <th class="text-info">Shield</th>
+                    <th class="text-info">Edit?</th>
+                    <th class="text-info">Remove!</th>
+                    <th class="text-info">Delete?!</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                    <td><a href=""></a></td>
+                    <td class="text-info"></td>
+                    <td class="text-info"><br><img src='{{ character.weapon_one.img_URL }}'></td>
+                    <td class="text-info"><br><img src='{{ character.weapon_two.img_URL }}'></td>
+                    <td class="text-info"><br><img src='{{ character.shield.img_URL }}'></td>
+                    <td>
+                        <form action="" method="POST">
+                            <button class="btn btn-outline-light btn-sm" id="editChar" type="submit">Edit {{ character.name }}</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="" method="POST">
+                            <button class="btn btn-outline-light btn-sm" id="remChar" type="submit">Remove {{ character.name }}</button>
+                        </form>
+                    </td>
+                    <td>
+                            {% comment %} if (user?._id.equals(c.user)) {  {% endcomment %}
+                        <form action="" method="POST">
+                            <button class="btn btn-outline-danger btn-sm" id="charID" type="submit">Delete {{ character.name }}</button>
+                        </form>
+
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+{% endblock %}

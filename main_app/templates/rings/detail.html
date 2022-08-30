@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">{{ ring.name }} <img src="{% static "/images" %}{{ ring.img_URL }}"></span>
+        <p>Type: {{ ring.type }}</p>
+        <p>Physical Defense: {{ ring.physical_resistance }}</p>
+        <p>Magic Defense: {{ ring.magical_resistance }}</p>
+        <p>Description: {{ ring.physical_damage }}</p>
+        <p>Description: {{ ring.magical_damage }}</p>
+        <p>Description: {{ ring.critical_chance }}</p>
+        <p>Description: {{ ring.critical_damage }}</p>
+        <p>Dodge: {{ ring.dodge }}</p>
+        <p>Roll Timer: {{ ring.roll }}</p>
+    </div>
+</div>
+
+{% endblock %}

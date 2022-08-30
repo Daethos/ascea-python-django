@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">{{ helm.name }} <img src="{% static "/images" %}{{ helm.img_URL }}"></span>
+        <p>Type: {{ helm.type }}</p>
+        <p>Physical Defense: {{ helm.physical_resistance }}</p>
+        <p>Magic Defense: {{ helm.magical_resistance }}</p>
+        <p>Description: {{ helm.physical_damage }}</p>
+        <p>Description: {{ helm.magical_damage }}</p>
+        <p>Description: {{ helm.critical_chance }}</p>
+        <p>Description: {{ helm.critical_damage }}</p>
+        <p>Dodge: {{ helm.dodge }}</p>
+        <p>Roll Timer: {{ helm.roll }}</p>
+    </div>
+</div>
+
+{% endblock %}
