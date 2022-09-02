@@ -6,20 +6,20 @@
 
 <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
     
-    {% for ring in rings %}
+    {% for chest in chests %}
     <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
-    title="{{ ring.name }} [{{ ring.type }}] <img src='{% static '/images' %}{{ ring.img_URL }}'>"
+    title="{{ chest.name }} [{{ chest.type }}] <img src='{% static '/images' %}{{ chest.img_URL }}'>"
     data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
-    data-bs-content="Attack Type: {{ ring.attack_type }}<br>
-    Damage Type: {{ ring.damage_type }}<br>
-    Physical Defense: {{ ring.physical_resistance }}<br>
-    Magic Defense: {{ ring.magical_resistance }}<br>
-    Physical Damage: {{ ring.physical_damage }}<br>
-    Magic Damage: {{ ring.magical_damage }}<br>
-    Crit Chance: +{{ ring.critical_chance }}%<br>
-    Crit Damage: x{{ ring.critical_damage }}<br>
-    Dodge: +{{ ring.dodge }}%<br>
-    Roll Timer: +{{ ring.roll }}s">{{ ring.name }}</a>
+    data-bs-content="Attack Type: {{ chest.attack_type }}<br>
+    Damage Type: {{ chest.damage_type }}<br>
+    Physical Defense: +{{ chest.physical_resistance }}%<br>
+    Magic Defense: +{{ chest.magical_resistance }}%<br>
+    Physical Damage: {{ chest.physical_damage }}x<br>
+    Magic Damage: {{ chest.magical_damage }}x<br>
+    Crit Chance: +{{ chest.critical_chance }}%<br>
+    Crit Damage: {{ chest.critical_damage }}x<br>
+    Dodge: +{{ chest.dodge }}%<br>
+    Roll Timer: +{{ chest.roll }}s">{{ chest.name }}</a>
     {% endfor %}
 </div>
 

@@ -6,7 +6,7 @@ body {
     background-color: black;
     margin: 0;
     overflow: auto;
-    font-family: 'Cinzel';
+    font-family: 'Cinzel' !important;
 }
 .custom-popover {
     --bs-popover-max-width: 200px;

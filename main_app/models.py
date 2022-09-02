@@ -15,8 +15,8 @@ class Weapon(models.Model):
     grip = models.CharField(max_length=48)
     attack_type = models.CharField(max_length=48)
     damage_type = models.CharField(max_length=48)
-    physical_damage = models.IntegerField()
-    magical_damage = models.IntegerField()
+    physical_damage = models.FloatField()
+    magical_damage = models.FloatField()
     critical_chance = models.IntegerField()
     critical_damage = models.FloatField()
     dodge = models.IntegerField()
@@ -31,8 +31,8 @@ class Shield(models.Model):
     type = models.CharField(max_length=48)
     physical_resistance = models.IntegerField()
     magical_resistance = models.IntegerField()
-    physical_damage = models.IntegerField()
-    magical_damage = models.IntegerField()
+    physical_damage = models.FloatField()
+    magical_damage = models.FloatField()
     critical_chance = models.IntegerField()
     critical_damage = models.FloatField()
     dodge = models.IntegerField()
@@ -47,8 +47,8 @@ class Helm(models.Model):
     type = models.CharField(max_length=48)
     physical_resistance = models.IntegerField()
     magical_resistance = models.IntegerField()
-    physical_damage = models.IntegerField()
-    magical_damage = models.IntegerField()
+    physical_damage = models.FloatField()
+    magical_damage = models.FloatField()
     critical_chance = models.IntegerField()
     critical_damage = models.FloatField()
     dodge = models.IntegerField()
@@ -63,8 +63,8 @@ class Chest(models.Model):
     type = models.CharField(max_length=48)
     physical_resistance = models.IntegerField()
     magical_resistance = models.IntegerField()
-    physical_damage = models.IntegerField()
-    magical_damage = models.IntegerField()
+    physical_damage = models.FloatField()
+    magical_damage = models.FloatField()
     critical_chance = models.IntegerField()
     critical_damage = models.FloatField()
     dodge = models.IntegerField()
@@ -79,8 +79,8 @@ class Leg(models.Model):
     type = models.CharField(max_length=48)
     physical_resistance = models.IntegerField()
     magical_resistance = models.IntegerField()
-    physical_damage = models.IntegerField()
-    magical_damage = models.IntegerField()
+    physical_damage = models.FloatField()
+    magical_damage = models.FloatField()
     critical_chance = models.IntegerField()
     critical_damage = models.FloatField()
     dodge = models.IntegerField()
@@ -94,8 +94,8 @@ class Ring(models.Model):
     name = models.CharField(max_length=48)
     physical_resistance = models.IntegerField()
     magical_resistance = models.IntegerField()
-    physical_damage = models.IntegerField()
-    magical_damage = models.IntegerField()
+    physical_damage = models.FloatField()
+    magical_damage = models.FloatField()
     critical_chance = models.IntegerField()
     critical_damage = models.FloatField()
     dodge = models.IntegerField()
@@ -109,8 +109,8 @@ class Amulet(models.Model):
     name = models.CharField(max_length=48)
     physical_resistance = models.IntegerField()
     magical_resistance = models.IntegerField()
-    physical_damage = models.IntegerField()
-    magical_damage = models.IntegerField()
+    physical_damage = models.FloatField()
+    magical_damage = models.FloatField()
     critical_chance = models.IntegerField()
     critical_damage = models.FloatField()
     dodge = models.IntegerField()
@@ -125,8 +125,8 @@ class Trinket(models.Model):
     type = models.CharField(max_length=48)
     physical_resistance = models.IntegerField()
     magical_resistance = models.IntegerField()
-    physical_damage = models.IntegerField()
-    magical_damage = models.IntegerField()
+    physical_damage = models.FloatField()
+    magical_damage = models.FloatField()
     critical_chance = models.IntegerField()
     critical_damage = models.FloatField()
     dodge = models.IntegerField()
@@ -135,6 +135,17 @@ class Trinket(models.Model):
 
     def __str__(self):
         return self.name
+
+# FAITHS = (
+#     (None, 'Without'),
+#     ('Adherent', 'Ancients'),
+#     ('Devoted', 'Daethos')
+# )
+# character model trait
+# faith = models.CharField(
+#   max_length=10,
+#   choices=FAITHS,
+#   default=FAITHS[0][0])
 
 class Character(models.Model):
     name = models.CharField(max_length=24)
