@@ -23,6 +23,7 @@
                 <li class="nav-item">
                     <a class="nav-link active text-info" aria-current="page" href="">Ascea: Last Duel</a>
                 </li>
+                
                     {% for profile in profiles %}
                     <li class="nav-item">
                         <a class="nav-link active text-info" aria-current="page" href="{% url 'detail.profile' profile.id %}">{{ profile.name }}</a>
@@ -39,25 +40,39 @@
                 <ul class="dropdown-menu bg-black">
                 <li><a class="dropdown-item text-info" href="{% url 'detail.character' character.id %}">{{ character.name }}</a></li>
                 </ul>
+                
                 {% endfor %}
                 </li>
                 </ul>
             </div>
         </div>
+        {% if user.is_authenticated %}
         <nav class="navbar bg-black">
             <div class="container-fluid">
-                <a class="btn btn-outline-danger" href="/logout">Logout</a>
+                <a class="btn btn-outline-danger" href="{% url 'logout' %}">Logout</a>
             </div>
         </nav>
+        {% else %}
+        <nav class="navbar bg-black">
+            <div class="container-fluid">
+                <a class="btn btn-outline-danger" href="{% url 'signup' %}">Sign Up</a>
+            </div>
+        </nav>
+        <nav class="navbar bg-black">
+            <div class="container-fluid">
+                <a class="btn btn-outline-danger" href="{% url 'login' %}">Login</a>
+            </div>
+        </nav>
+        {% endif %}
     </nav>
 </header>
 
     {% block content %}
     {% endblock %}
 
-<footer class="page-footer">
+{% comment %} <footer class="page-footer">
     <div class="right">All Rights Reserved, &copy; 2022 Silly Goose &nbsp;</div>
-</footer>
+</footer> {% endcomment %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script defer src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>

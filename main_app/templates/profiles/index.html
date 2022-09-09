@@ -2,9 +2,7 @@
 {% load static %}
 {% block content %}
 
-<h1>Character List</h1>
-
-{% for profile in profiles %}
+{% comment %} {% for profile in profiles %}
 <div class="card">
     <!-- add this single line below -->
     <a href="{% url 'detail.profile' profile.id %}">
@@ -14,12 +12,13 @@
     </div>
     </a>
 </div>
-{% endfor %}
+{% endfor %} {% endcomment %}
 
 <div class="container-fluid text-center">
     <div class="col-12 bg-black p1 border border-info">
     <div class="col-10 bg-black text-center offset-1 p-2 mt-4 borderless">
-        <h1 class="text-info">Greetings, Player!</h1>
+        <h1 class="text-info">Greetings, Ascean!</h1>
+        <a class="btn btn-info outline" href="{% url 'profiles_create' %}">New Ascean</a>
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 my-4 borderless">
         <p>
@@ -32,11 +31,10 @@
         <table class="table table-hover bg-black table-bordered border-info">
             <thead>
                 <tr>
+                    {% for profile in profiles %}
                     <th class="text-info">Name</th>
                     <th class="text-info">Description</th>
-                    <th class="text-info">Main Weapon</th>
-                    <th class="text-info">Off-Weapon</th>
-                    <th class="text-info">Shield</th>
+                    <th class="text-info">Character(s)</th>
                     <th class="text-info">Edit?</th>
                     <th class="text-info">Remove!</th>
                     <th class="text-info">Delete?!</th>
@@ -44,28 +42,21 @@
             </thead>
             <tbody>
                 <tr>
-
-                    <td><a href=""></a></td>
-                    <td class="text-info"></td>
-                    <td class="text-info"><br><img src='{{ character.weapon_one.img_URL }}'></td>
-                    <td class="text-info"><br><img src='{{ character.weapon_two.img_URL }}'></td>
-                    <td class="text-info"><br><img src='{{ character.shield.img_URL }}'></td>
+                    <td class="text-info">{{ profile.name }}</td>
+                    <td class="text-info"><br>{{ profile.description }}</td>
+                    <td class="text-info"><br>{{ profile.characters }}</td>
                     <td>
-                        <form action="" method="POST">
-                            <button class="btn btn-outline-light btn-sm" id="editChar" type="submit">Edit {{ character.name }}</button>
-                        </form>
+                        <a class="btn btn-info outline" href="{% url 'profiles_update' profile.id %}">Edit {{ profile.name }}</a>
                     </td>
                     <td>
                         <form action="" method="POST">
-                            <button class="btn btn-outline-light btn-sm" id="remChar" type="submit">Remove {{ character.name }}</button>
+                            <a class="btn btn-info outline" href="">Remove {{ profile.name }}</a>
                         </form>
                     </td>
                     <td>
-                            {% comment %} if (user?._id.equals(c.user)) {  {% endcomment %}
-                        <form action="" method="POST">
-                            <button class="btn btn-outline-danger btn-sm" id="charID" type="submit">Delete {{ character.name }}</button>
-                        </form>
-
+                        {% comment %} if (user?._id.equals(c.user)) {  {% endcomment %}
+                        <br><a class="btn btn-info outline" href="{% url 'profiles_delete' profile.id %}">Delete {{ profile.name }}</a>
+                        {% endfor %}
                     </td>
                 </tr>
 
@@ -74,6 +65,7 @@
         </div>
         </div>
     </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-4 borderless"><a class="btn btn-info outline" href="{% url 'profiles_create' %}">New Ascean</a></div>
     </div>
 </div>
 

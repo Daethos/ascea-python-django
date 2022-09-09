@@ -1,9 +1,45 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
+<div class="container-fluid bg-black">
+    <div class="col-12 bg-black p1 border text-center border-info">
+        <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
+            <h1 class="text-info">Profile Finder And Creator!</h1>
+        </div>
+        <div class="col-10 bg-black text-start offset-1 mt-4">
+            <h5 class="text-white">Firstly, Do You Possess A Profile?</h5>
+        </div>
+        <div class="col-10 bg-black text-Center mt-2 offset-1 p-2">
+            {% for profile in profiles %}
+                <a class="btn btn-outline-primary btn-large" href="{% url 'profile.detail' profile.id %}">Go to Your Profile Named: {{ profile.name }} !</a>
+            {% endfor %}
+        </div>
+        <form id="create-profile" action="" method="POST">
+            {% csrf_token %}
+            <div class="col-10 bg-black text-start offset-1 p-2 mt-4 border border-info">
+                <h5 class="text-white">Profile Name:</h5>
+            </div>
+        <div class="form-floating text-start col-10 offset-1">
+            <textarea class="form-control border border-info bg-black text-white" style="height: 55px" name="name" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+            <label for="floatingTextarea" class="text-white">Warning: No Profanity Filter!</label>
+        </div>
+        <div class="col-10 bg-black text-start offset-1 p-2 mt-4 border border-info">
+            <h5 class="text-white">Profile Description:</h5>
+        </div>
+        <div class="form-floating text-start col-10 offset-1">
+            <textarea class="form-control border border-info bg-black text-white" style="height: 125px" name="profile.description" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+            <label for="floatingTextarea" class="text-white">I REPEAT: No Profranity Filter!</label>
+        </div>
+        <input type="submit" value="Create Profile" class="btn btn-outline-success btn-lg my-4">
+        </form>
+    </div>
+</div>
+
 <h1>New Profile</h1>
+<div class="form-group">
 <!-- Leaving the action empty makes the form post to the same url used to display it -->
+<table>
 <form action="" method="POST">
     <!-- Django requires the following for security purposes -->
     {% csrf_token %}
@@ -11,7 +47,9 @@
         <!-- Render the inputs inside of <tr>s & <td>s -->
         {{ form.as_p }}
     </table>
-    <input type="submit" value="Submit!" class="btn">
+    <input type="submit" value="Submit!" class="btn btn-info outline">
 </form>
+</table>
+</div>
 
 {% endblock %}

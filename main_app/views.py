@@ -1,6 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Profile, Weapon, Character, Shield, Helm, Chest, Leg, Ring, Amulet, Trinket
+from .forms import ProfileForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # from .models import Profile, Character
 # Create your views here.
@@ -10,12 +15,15 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+@login_required
 def characters_index(request):
     characters = Character.objects.all()
     return render(request, 'characters/index.html', { 'characters': characters })
 
+@login_required
 def profiles_index(request):
-    profiles = Profile.objects.all()
+    profiles = Profile.objects.filter(user=request.user)
+    # profiles = Profile.objects.all()
     return render(request, 'profiles/index.html', { 'profiles': profiles })
 
 def weapons_index(request):
@@ -58,10 +66,12 @@ def shields_detail(request, shield_id):
     shield = Shield.objects.get(id=shield_id)
     return render(request, 'shields/detail.html', { 'shield': shield })
 
+@login_required
 def profiles_detail(request, profile_id):
     profile = Profile.objects.get(id=profile_id)
     return render(request, 'profiles/detail.html', { 'profile': profile })
 
+@login_required
 def characters_detail(request, character_id):
     character = Character.objects.get(id=character_id)
     return render(request, 'characters/detail.html', { 'character': character })
@@ -90,28 +100,51 @@ def trinkets_detail(request, trinket_id):
     trinket = Trinket.objects.get(id=trinket_id)
     return render(request, 'trinkets/detail.html', { 'trinket': trinket })
 
-class ProfileCreate(CreateView):
+class ProfileCreate(LoginRequiredMixin, CreateView):
+    model = Profile
+    form_class = ProfileForm
+    # fields = '__all__'
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+class ProfileUpdate(LoginRequiredMixin, UpdateView):
     model = Profile
     fields = '__all__'
-    success_url = '/profiles/'
 
-class ProfileUpdate(UpdateView):
-    model = Profile
-    fields = '__all__'
-
-class ProfileDelete(DeleteView):
+class ProfileDelete(LoginRequiredMixin, DeleteView):
     model = Profile
     success_url = '/profiles/'
 
-class CharacterCreate(CreateView):
+class CharacterCreate(LoginRequiredMixin, CreateView):
     model = Character
     fields = '__all__'
     success_url = '/characters/'
 
-class CharacterUpdate(UpdateView):
+class CharacterUpdate(LoginRequiredMixin, UpdateView):
     model = Character
     fields = '__all__'
 
-class CharacterDelete(DeleteView):
+class CharacterDelete(LoginRequiredMixin, DeleteView):
     model = Character
     success_url = '/characters/'
+
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+    # This is how to create a 'user' form object
+    # that includes the data from the browser
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+        # This will add the user to the database
+            user = form.save()
+            # This is how we log a user in via code
+            login(request, user)
+            return redirect('index')
+        else:
+            error_message = 'Invalid sign up - try again'
+    # A bad POST or a GET request, so render signup.html with an empty form
+    form = UserCreationForm()
+    context = { 'form': form, 'error_message': error_message }
+    return render(request, 'registration/signup.html', context)

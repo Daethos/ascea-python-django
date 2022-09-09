@@ -2,18 +2,7 @@
 {% load static %}
 {% block content %}
 
-<div class="card">
-    <div class="card-content">
-        <span class="card-title">{{ profile.name }} {{ profile.img_URL }}</span>
-        <p>{{ profile.description }}</p>
-    </div>
-</div>
-<div class="card-action">
-    <a href="{% url 'profiles_update' profile.id %}">Edit</a>
-    <a href="{% url 'profiles_delete' profile.id %}">Delete</a>
-</div>
-
-<div class="container-fluid text-center">
+<div class="container-fluid text-center bg-black">
     <div class="col-12 bg-black p1 border border-info">
     <div class="col-10 bg-black text-center offset-1 p-2 mt-4 borderless">
         <h1 class="text-info">Greetings, Player!</h1>
