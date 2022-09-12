@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Profile, Weapon, Character, Shield, Helm, Chest, Leg, Ring, Amulet, Trinket
-from .forms import ProfileForm
+from .forms import ProfileForm, CharCreateForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -129,6 +129,33 @@ class CharacterUpdate(LoginRequiredMixin, UpdateView):
 class CharacterDelete(LoginRequiredMixin, DeleteView):
     model = Character
     success_url = '/characters/'
+
+def characterCreation(request):
+    error_message = ''
+    if request.method == 'POST':
+        form = CharCreateForm(request.POST)
+        print(form)
+        if form.is_valid():
+            character = form.save()
+            print(character)
+            return redirect('characters/creation.html')
+        else:
+            error_message = 'Invalid Character Creation -- Please Try Again'
+    form = CharCreateForm()
+    context = { 
+        'weapons': Weapon.objects.all(),
+        'shields': Shield.objects.all(),
+        'helmets': Helm.objects.all(),
+        'chests': Chest.objects.all(),
+        'legs': Leg.objects.all(),
+        'rings': Ring.objects.all(),
+        'amulets': Amulet.objects.all(),
+        'trinkets': Trinket.objects.all(),
+        'form': form,
+        'error_message': error_message 
+        }
+    return render(request, 'characters/creation.html', context)
+
 
 def signup(request):
     error_message = ''

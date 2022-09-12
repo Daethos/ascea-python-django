@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
 
@@ -27,51 +27,72 @@
         <p class="text-info" id="pool-output"></p>
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
-            <label id="constitution-label" class="fieldlabel text-info">Constitution</label>
+            <h3 id="constitution-h3" class="fieldh3 text-info">Constitution</h3>
+            <p class="text-info">Affects: Defense, Magic, Health, Posture</p>
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 border border-info">
         <button id="con-minus" min="8">−</button>
-            <input id="con-slider" class="form-control-number" type="number" name="constitution" value="{{form_query.constitution}}" min="8" default="8" max="18" placeholder="8" step="1">
+            <input id="con-slider" class="form-control-number" type="number" name="constitution" value="{{form_query.constitution}}" min="8" default="8" max="18" placeholder="8" step="1" readonly>
         <button id="con-plus" max="18">+</button>    
             <output class="text-info" id="con-box">{{form_query.constitution}} Points</output>
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
-            <label id="strength-label" class="fieldlabel text-info">Strength</label>
+            <h3 id="strength-h3" class="fieldh3 text-info">Strength</h3>
+            <p class="text-info">Affects: Crit Damage, Physical, Posture</p>
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 border border-info">
         <button id="str-minus" min="8">−</button>
-            <input id="str-slider" class="form-control-number" type="number" name="strength" value="{{form_query.strength}}" min="8" default="8" max="18" placeholder="8" step="1">
+            <input id="str-slider" class="form-control-number" type="number" name="strength" value="{{form_query.strength}}" min="8" default="8" max="18" placeholder="8" step="1" readonly>
         <button id="str-plus" max="18">+</button>
             <output class="text-info" id="str-box">{{form_query.strength}} Points</output>
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
-            <label id="dexterity-label" class="fieldlabel text-info">Dexterity</label>
+            <h3 id="dexterity-h3" class="fieldh3 text-info">Dexterity</h3>
+            <p class="text-info">Affects: Crit Chance, Dodge, Physical, Roll</p>
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 border border-info">
         <button id="dex-minus" min="8">−</button>
-            <input id="dex-slider" class="form-control-number" type="number" name="dexterity" value="{{form_query.dexterity}}" min="8" default="8" max="18" placeholder="8" step="1">
+            <input id="dex-slider" class="form-control-number" type="number" name="dexterity" value="{{form_query.dexterity}}" min="8" default="8" max="18" placeholder="8" step="1" readonly>
         <button id="dex-plus" max="18">+</button>    
             <output class="text-info" id="dex-box">{{form_query.dexterity}} Points</output>
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
-            <label id="achre-label" class="fieldlabel text-info">Achre [Clarity]</label>
+            <h3 id="achre-h3" class="fieldh3 text-info">Achre [Clarity]</h3>
+            <p class="text-info">Affects: Crit Chance, Dodge, Magic, Roll</p>
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 border border-info">
         <button id="ach-minus" min="8">−</button>
-            <input id="ach-slider" class="form-control-number" type="number" name="achre" value="{{form_query.achre}}" min="8" default="8" max="18" placeholder="8" step="1">
+            <input id="ach-slider" class="form-control-number" type="number" name="achre" value="{{form_query.achre}}" min="8" default="8" max="18" placeholder="8" step="1" readonly>
         <button id="ach-plus" max="18">+</button>    
             <output class="text-info" id="ach-box">{{form_query.achre}} Points</output>  
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">       
-            <label id="caer-label" class="fieldlabel text-info">Caer [Potential]</label>
+            <h3 id="caer-h3" class="fieldh3 text-info">Caer [Potential]</h3>
+            <p class="text-info">Affects: Crit Damage, Defense, Health, Magic, Posture</p>
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 border border-info">
         <button id="caer-minus" min="8">−</button>
-            <input id="caer-slider" class="form-control-number" type="number" name="caer" value="{{form_query.caer}}" min="8" default="8" max="18" placeholder="8" step="1">
+            <input id="caer-slider" class="form-control-number" type="number" name="caer" value="{{form_query.caer}}" min="8" default="8" max="18" placeholder="8" step="1" readonly>
         <button id="caer-plus" max="18">+</button>    
             <output class="text-info" id="caer-box">{{form_query.caer}} Points</output>    
     </div>
-
+    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
+        <p class="text-info">Weapons</p>
+        {% for weapon in weapons %}
+        <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
+        title="<a href='{% url 'detail.weapon' weapon.id %}'>{{ weapon.name }} [{{ weapon.type }}] <img src='{% static '/images' %}{{ weapon.img_URL }}'></a>"
+        data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
+        data-bs-content="Attack Type: {{ weapon.attack_type }}<br>
+        Damage Type: {{ weapon.damage_type }}<br>
+        Physical Damage: {{ weapon.physical_damage }}<br>
+        Magic Damage: {{ weapon.magical_damage }}<br>
+        Crit Chance: +{{ weapon.critical_chance }}%<br>
+        Crit Damage: x{{ weapon.critical_damage }}<br>
+        Dodge: +{{ weapon.dodge }}%<br>
+        Roll Timer: +{{ weapon.roll }}s">{{ weapon.name }}</a>
+        {% endfor %}
+    </div>
+    
         <p class="text-info">{{form.weapon_one.label}}</p>
         {{ form.weapon_one }}
         <p class="text-info">{{form.weapon_two.label}}</p>

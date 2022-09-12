@@ -1,0 +1,729 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="container-fluid bg-black">
+    <div class="col-12 bg-black p1 border text-center border-info">
+        {% if error_message %}<p class="text-danger">{{ error_message }}</p>{% endif %}
+{% if object %}
+    <h1>Edit <span class="text-info">{{object.name}}</span></h1>
+{% else %}
+    <h1 class="text-info">New Champion!</h1>
+{% endif %}
+<!-- Leaving the action empty makes the form post to the same url used to display it -->
+<form action="" method="POST">
+    <!-- Django requires the following for security purposes -->
+    {% csrf_token %}
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
+        <!-- Render the inputs inside of <tr>s & <td>s -->
+        <p class="text-info">{{form.name.label}}</p>
+        {{ form.name }}
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
+        <p class="text-info">{{form.description.label}}</p>
+        {{ form.description }}
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-3 mt-5 border border-info">
+        <h3 class="text-info" id="pool-output"></h3>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
+            <h3 id="constitution-h3" class="fieldh3 text-info">Constitution</h3>
+            <p class="text-info">Affects: Defense, Magic, Health, Posture</p>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 border border-info">
+        <button id="con-minus" min="8">−</button>
+            <input id="con-slider" class="form-control-number" type="number" name="constitution" value="{{form_query.constitution}}" min="8" default="8" max="18" placeholder="8" step="1" readonly>
+        <button id="con-plus" max="18">+</button>    
+            <output class="text-info" id="con-box">{{form_query.constitution}} Points</output>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
+            <h3 id="strength-h3" class="fieldh3 text-info">Strength</h3>
+            <p class="text-info">Affects: Crit Damage, Physical, Posture</p>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 border border-info">
+        <button id="str-minus" min="8">−</button>
+            <input id="str-slider" class="form-control-number" type="number" name="strength" value="{{form_query.strength}}" min="8" default="8" max="18" placeholder="8" step="1" readonly>
+        <button id="str-plus" max="18">+</button>
+            <output class="text-info" id="str-box">{{form_query.strength}} Points</output>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
+            <h3 id="dexterity-h3" class="fieldh3 text-info">Dexterity</h3>
+            <p class="text-info">Affects: Crit Chance, Dodge, Physical, Roll</p>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 border border-info">
+        <button id="dex-minus" min="8">−</button>
+            <input id="dex-slider" class="form-control-number" type="number" name="dexterity" value="{{form_query.dexterity}}" min="8" default="8" max="18" placeholder="8" step="1" readonly>
+        <button id="dex-plus" max="18">+</button>    
+            <output class="text-info" id="dex-box">{{form_query.dexterity}} Points</output>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
+            <h3 id="achre-h3" class="fieldh3 text-info">Achre [Clarity]</h3>
+            <p class="text-info">Affects: Crit Chance, Dodge, Magic, Roll</p>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 border border-info">
+        <button id="ach-minus" min="8">−</button>
+            <input id="ach-slider" class="form-control-number" type="number" name="achre" value="{{form_query.achre}}" min="8" default="8" max="18" placeholder="8" step="1" readonly>
+        <button id="ach-plus" max="18">+</button>    
+            <output class="text-info" id="ach-box">{{form_query.achre}} Points</output>  
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">       
+            <h3 id="caer-h3" class="fieldh3 text-info">Caer [Potential]</h3>
+            <p class="text-info">Affects: Crit Damage, Defense, Health, Magic, Posture</p>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-2 border border-info">
+        <button id="caer-minus" min="8">−</button>
+            <input id="caer-slider" class="form-control-number" type="number" name="caer" value="{{form_query.caer}}" min="8" default="8" max="18" placeholder="8" step="1" readonly>
+        <button id="caer-plus" max="18">+</button>    
+            <output class="text-info" id="caer-box">{{form_query.caer}} Points</output>    
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
+        <h3 class="text-info">Weapons</h3>
+        {% for weapon in weapons %}
+        <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
+        title="<a href='{% url 'detail.weapon' weapon.id %}'>{{ weapon.name }} [{{ weapon.type }}] <img src='{% static '/images' %}{{ weapon.img_URL }}'></a>"
+        data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
+        data-bs-content="Attack Type: {{ weapon.attack_type }}<br>
+        Damage Type: {{ weapon.damage_type }}<br>
+        Physical Damage: {{ weapon.physical_damage }}<br>
+        Magic Damage: {{ weapon.magical_damage }}<br>
+        Crit Chance: +{{ weapon.critical_chance }}%<br>
+        Crit Damage: x{{ weapon.critical_damage }}<br>
+        Dodge: +{{ weapon.dodge }}%<br>
+        Roll Timer: +{{ weapon.roll }}s">{{ weapon.name }}</a>
+        {% endfor %}
+    </div>
+    
+        <p class="text-info">{{form.weapon_one.label}}</p>
+        {{ form.weapon_one }}
+        <p class="text-info">{{form.weapon_two.label}}</p>
+        {{ form.weapon_two }}
+
+    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
+        <h3 class="text-info">Shields</h3>
+        {% for shield in shields %}
+        <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
+        title="{{ shield.name }} [{{ shield.type }}] <img src='{% static '/images' %}{{ shield.img_URL }}'>"
+        data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
+        data-bs-content="Attack Type: {{ shield.attack_type }}<br>
+        Damage Type: {{ shield.damage_type }}<br>
+        Physical Defense: {{ shield.physical_resistance }}<br>
+        Magic Defense: {{ shield.magical_resistance }}<br>
+        Physical Damage: {{ shield.physical_damage }}<br>
+        Magic Damage: {{ shield.magical_damage }}<br>
+        Crit Chance: +{{ shield.critical_chance }}%<br>
+        Crit Damage: x{{ shield.critical_damage }}<br>
+        Dodge: +{{ shield.dodge }}%<br>
+        Roll Timer: +{{ shield.roll }}s">{{ shield.name }}</a>
+        {% endfor %}
+    </div>
+        <p class="text-info">{{form.shield.label}}</p>
+        {{ form.shield }}
+
+    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
+        <h3 class="text-info">Helmets</h3>   
+        {% for helm in helmets %}
+        <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
+        title="{{ helm.name }} [{{ helm.type }}] <img src='{% static '/images' %}{{ helm.img_URL }}'>"
+        data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
+        data-bs-content="Attack Type: {{ helm.attack_type }}<br>
+        Damage Type: {{ helm.damage_type }}<br>
+        Physical Defense: {{ helm.physical_resistance }}<br>
+        Magic Defense: {{ helm.magical_resistance }}<br>
+        Physical Damage: {{ helm.physical_damage }}<br>
+        Magic Damage: {{ helm.magical_damage }}<br>
+        Crit Chance: +{{ helm.critical_chance }}%<br>
+        Crit Damage: x{{ helm.critical_damage }}<br>
+        Dodge: +{{ helm.dodge }}%<br>
+        Roll Timer: +{{ helm.roll }}s">{{ helm.name }}</a>
+        {% endfor %}
+    </div>
+        <p class="text-info">{{form.helm.label}}</p>
+        {{ form.helm }}
+
+    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">  
+        <h3 class="text-info">Chests</h3>
+        {% for chest in chests %}
+        <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
+        title="{{ chest.name }} [{{ chest.type }}] <img src='{% static '/images' %}{{ chest.img_URL }}'>"
+        data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
+        data-bs-content="Attack Type: {{ chest.attack_type }}<br>
+        Damage Type: {{ chest.damage_type }}<br>
+        Physical Defense: +{{ chest.physical_resistance }}%<br>
+        Magic Defense: +{{ chest.magical_resistance }}%<br>
+        Physical Damage: {{ chest.physical_damage }}x<br>
+        Magic Damage: {{ chest.magical_damage }}x<br>
+        Crit Chance: +{{ chest.critical_chance }}%<br>
+        Crit Damage: {{ chest.critical_damage }}x<br>
+        Dodge: +{{ chest.dodge }}%<br>
+        Roll Timer: +{{ chest.roll }}s">{{ chest.name }}</a>
+        {% endfor %}
+    </div>
+        <p class="text-info">{{form.chest.label}}</p>
+        {{ form.chest }}
+
+    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
+        <h3 class="text-info">Legs</h3>
+        {% for leg in legs %}
+        <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
+        title="{{ leg.name }} [{{ leg.type }}] <img src='{% static '/images' %}{{ leg.img_URL }}'>"
+        data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
+        data-bs-content="Attack Type: {{ leg.attack_type }}<br>
+        Damage Type: {{ leg.damage_type }}<br>
+        Physical Defense: {{ leg.physical_resistance }}<br>
+        Magic Defense: {{ leg.magical_resistance }}<br>
+        Physical Damage: {{ leg.physical_damage }}<br>
+        Magic Damage: {{ leg.magical_damage }}<br>
+        Crit Chance: +{{ leg.critical_chance }}%<br>
+        Crit Damage: x{{ leg.critical_damage }}<br>
+        Dodge: +{{ leg.dodge }}%<br>
+        Roll Timer: +{{ leg.roll }}s">{{ leg.name }}</a>
+        {% endfor %}
+    </div>
+        <p class="text-info">{{form.legs.label}}</p>
+        {{ form.legs }}
+
+
+        <p class="text-info">{{form.ring_one.label}}</p>
+        {{ form.ring_one }}
+        <p class="text-info">{{form.ring_two.label}}</p>
+        {{ form.ring_two }}
+
+
+        <p class="text-info">{{form.amulet.label}}</p>
+        {{ form.amulet }}
+
+
+        <p class="text-info">{{form.trinket.label}}</p>
+        {{ form.trinket }}
+
+
+        <p class="text-info">{{form.adherent.label}}</p>
+        {{ form.adherent }}
+        <p class="text-info">{{form.devoted.label}}</p>
+        {{ form.devoted }}
+    </div>
+    <input type="submit" value="Submit!" class="btn">
+</form>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+    let pool = 0;
+    let poolOutput = document.getElementById('pool-output');
+    poolOutput.innerHTML = pool + ' Points / 30 Points';
+
+    let conIn = document.getElementById('con-slider');
+    let conOut = document.getElementById('con-box');
+    let conAttPoints = Number(conIn.value);
+    let startCon = Number(conIn.value) + 8;
+    conIn.value = startCon;
+    console.log(conIn.value, '<- conIn.value');
+    console.log(startCon, '<-starting Constitution')
+    conOut.innerHTML = startCon + ' Points' + ' +' + Math.floor((Number(conIn.value) - 10) / 2) + ' Modifier';
+    
+  
+    let strIn = document.getElementById('str-slider')
+    let strOut = document.getElementById('str-box');
+    let strAttPoints = Number(strIn.value);
+    let startStr = Number(strIn.value) + 8;
+    strIn.value = startStr;
+    strOut.innerHTML = startStr + ' Points' + ' +' + Math.floor((Number(strIn.value) - 10) / 2) + ' Modifier';
+
+    let dexIn = document.getElementById('dex-slider');
+    let dexOut = document.getElementById('dex-box');
+    let dexAttPoints = Number(dexIn.value);
+    let startDex = Number(dexIn.value) + 8;
+    dexIn.value = startDex;
+    dexOut.innerHTML = startDex + ' Points' + ' +' + Math.floor((Number(dexIn.value) - 10) / 2) + ' Modifier';
+
+    let achIn = document.getElementById('ach-slider');
+    let achOut = document.getElementById('ach-box');
+    let achAttPoints = Number(achIn.value);
+    let startAch = Number(achIn.value) + 8;
+    achIn.value = startAch;
+    achOut.innerHTML = startAch + ' Points' + ' +' + Math.floor((Number(achIn.value) - 10) / 2) + ' Modifier';
+
+    let caerIn = document.getElementById('caer-slider');
+    let caerOut = document.getElementById('caer-box');
+    let caerAttPoints = Number(caerIn.value);
+    let startCaer = Number(caerIn.value) + 8;
+    caerIn.value = startCaer;
+    caerOut.innerHTML = startCaer + ' Points' + ' +' + Math.floor((Number(caerIn.value) - 10) / 2) + ' Modifier';
+
+    $('input')
+        .change(function() {
+            if (pool < 30) {
+                conOut.innerHTML = conIn.value + ' Points' + ' +' + Math.floor((conIn.value - 10) / 2) + ' Modifier';
+                conAttPoints = conIn.value - 8;
+                console.log(strAttPoints, '<- constitution attribute points');
+                strOut.innerHTML = strIn.value + ' Points' + ' +' + Math.floor((strIn.value - 10) / 2) + ' Modifier';
+                strAttPoints = strIn.value - 8;
+                console.log(strAttPoints, '<- strength attribute points');
+                dexOut.innerHTML = dexIn.value + ' Points' + ' +' + Math.floor((dexIn.value - 10) / 2) + ' Modifier';
+                dexAttPoints = dexIn.value - 8;
+                console.log(dexAttPoints, '<- dexterity attribute points');
+                achOut.innerHTML = achIn.value + ' Points' + ' +' + Math.floor((achIn.value - 10) / 2) + ' Modifier';
+                achAttPoints = achIn.value - 8;
+                console.log(achAttPoints, '<- achre attribute points');
+                caerOut.innerHTML = caerIn.value + ' Points' + ' +' + Math.floor((caerIn.value - 10) / 2) + ' Modifier';
+                caerAttPoints = caerIn.value - 8;
+                console.log(caerAttPoints, '<- caer attribute points');
+                console.log(pool, '<- new pool total')
+                poolUpdate();
+                poolOutput.innerHTML = pool + ' Points / 30 Points';
+                if (pool >= 30) {
+
+                }
+            }
+            if (pool >= 30 && (conAttPoints > conIn.value - 8 || strAttPoints > strIn.value - 8 || dexAttPoints > dexIn.value - 8 || achAttPoints > achIn.value - 8 || caerAttPoints > caerIn.value - 8)) {
+                conOut.innerHTML = conIn.value + ' Points';
+                conAttPoints = conIn.value - 8;
+                console.log(strAttPoints, '<- constitution attribute points');
+                strOut.innerHTML = strIn.value + ' Points';
+                strAttPoints = strIn.value - 8;
+                console.log(strAttPoints, '<- strength attribute points');
+                dexOut.innerHTML = dexIn.value + ' Points';
+                dexAttPoints = dexIn.value - 8;
+                console.log(dexAttPoints, '<- dexterity attribute points');
+                achOut.innerHTML = achIn.value + ' Points';
+                achAttPoints = achIn.value - 8;
+                console.log(achAttPoints, '<- achre attribute points');
+                caerOut.innerHTML = caerIn.value + ' Points';
+                caerAttPoints = caerIn.value - 8;
+                console.log(caerAttPoints, '<- caer attribute points');
+                // pool = conAttPoints + strAttPoints + dexAttPoints + achAttPoints + caerAttPoints;
+                console.log(pool, '<- new pool total')
+                poolUpdate();
+                poolOutput.innerHTML = pool + ' Points / 30 Points';
+                if (pool >= 30) {
+
+                }
+            }
+    })
+
+    const conMinusButton = document.getElementById('con-minus');
+    const conPlusButton = document.getElementById('con-plus');
+    const strMinusButton = document.getElementById('str-minus');
+    const strPlusButton = document.getElementById('str-plus');
+    const dexMinusButton = document.getElementById('dex-minus');
+    const dexPlusButton = document.getElementById('dex-plus');
+    const achMinusButton = document.getElementById('ach-minus');
+    const achPlusButton = document.getElementById('ach-plus');
+    const caerMinusButton = document.getElementById('caer-minus');
+    const caerPlusButton = document.getElementById('caer-plus');
+    conMinusButton.style.display = 'none';
+    strMinusButton.style.display = 'none';
+    dexMinusButton.style.display = 'none';
+    achMinusButton.style.display = 'none';
+    caerMinusButton.style.display = 'none';
+
+    conMinusButton.addEventListener('click', event => {
+        event.preventDefault();
+        const currentValue = Number(conIn.value);
+        conIn.value = currentValue - 1;
+        conOut.innerHTML = conIn.value + ' Points' + ' +' + Math.floor((conIn.value - 10) / 2) + ' Modifier';
+        conAttPoints = conIn.value - 8;
+        console.log(strAttPoints, '<- constitution attribute points');
+        poolUpdate();
+        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        if (conIn.value == 8) {
+            conMinusButton.style.display = 'none';
+        }
+        if (pool < 30 && Number(conIn.value) < 18) {
+            conPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(strIn.value) < 18) {
+            strPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(dexIn.value) < 18) {
+            dexPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(achIn.value) < 18) {
+            achPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(caerIn.value) < 18) {
+            caerPlusButton.style.display = 'inline-block';
+        }
+        if (pool >= 30) {
+            conPlusButton.style.display = 'none';
+            strPlusButton.style.display = 'none';
+            dexPlusButton.style.display = 'none';
+            achPlusButton.style.display = 'none';
+            caerPlusButton.style.display = 'none';
+        }
+    });
+
+    // Finish up the Con Plus Button by inverting the Minus Button, right? Sounds right.
+    conPlusButton.addEventListener('click', event => {
+        event.preventDefault();
+        const currentValue = Number(conIn.value);
+        conIn.value = currentValue + 1;
+        conOut.innerHTML = conIn.value + ' Points' + ' +' + Math.floor((conIn.value - 10) / 2) + ' Modifier';
+        conAttPoints = conIn.value - 8;
+        console.log(Number(conIn.value), '<- conIn.value in conPlusButton event listener');
+        console.log(strAttPoints, '<- constitution attribute points');
+        poolUpdate();
+        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        if (pool >= 30) {
+            conPlusButton.style.display = 'none';
+            strPlusButton.style.display = 'none';
+            dexPlusButton.style.display = 'none';
+            achPlusButton.style.display = 'none';
+            caerPlusButton.style.display = 'none';
+        }
+        if (Number(conIn.value) >= 18) {
+            conPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(conIn.value) > 8) {
+            conPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(strIn.value) > 8) {
+            strPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(dexIn.value) > 8) {
+            dexPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(achIn.value) > 8) {
+            achPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(caerIn.value) > 8) {
+            caerPlusButton.style.display = 'none';
+        }
+        if (Number(conIn.value) > 8) {
+            conMinusButton.style.display = 'inline-block';
+        }
+    });
+
+    strMinusButton.addEventListener('click', event => {
+        event.preventDefault();
+        const currentValue = Number(strIn.value);
+        strIn.value = currentValue - 1;
+        strOut.innerHTML = strIn.value + ' Points' + ' +' + Math.floor((strIn.value - 10) / 2) + ' Modifier';
+        strAttPoints = strIn.value - 8;
+        console.log(strAttPoints, '<- strength attribute points');
+        poolUpdate();
+        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        if (strIn.value == 8) {
+            strMinusButton.style.display = 'none';
+        }
+        if (pool < 30 && Number(conIn.value) < 18) {
+            conPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(strIn.value) < 18) {
+            strPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(dexIn.value) < 18) {
+            dexPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(achIn.value) < 18) {
+            achPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(caerIn.value) < 18) {
+            caerPlusButton.style.display = 'inline-block';
+        }
+        if (pool >= 30) {
+            conPlusButton.style.display = 'none';
+            strPlusButton.style.display = 'none';
+            dexPlusButton.style.display = 'none';
+            achPlusButton.style.display = 'none';
+            caerPlusButton.style.display = 'none';
+        }
+    });
+
+    // Finish up the Con Plus Button by inverting the Minus Button, right? Sounds right.
+    strPlusButton.addEventListener('click', event => {
+        event.preventDefault();
+        const currentValue = Number(strIn.value);
+        strIn.value = currentValue + 1;
+        strOut.innerHTML = strIn.value + ' Points' + ' +' + Math.floor((strIn.value - 10) / 2) + ' Modifier';
+        strAttPoints = strIn.value - 8;
+        console.log(Number(strIn.value), '<- strIn.value in strPlusButton event listener');
+        console.log(strAttPoints, '<- strength attribute points');
+        poolUpdate();
+        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        if (pool >= 30) {
+            conPlusButton.style.display = 'none';
+            strPlusButton.style.display = 'none';
+            dexPlusButton.style.display = 'none';
+            achPlusButton.style.display = 'none';
+            caerPlusButton.style.display = 'none';
+        }
+        if (Number(strIn.value) >= 18) {
+            strPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(conIn.value) > 8) {
+            conPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(strIn.value) > 8) {
+            strPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(dexIn.value) > 8) {
+            dexPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(achIn.value) > 8) {
+            achPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(caerIn.value) > 8) {
+            caerPlusButton.style.display = 'none';
+        }
+        if (Number(strIn.value) > 8) {
+            strMinusButton.style.display = 'inline-block';
+        }
+    });
+
+    dexMinusButton.addEventListener('click', event => {
+        event.preventDefault();
+        const currentValue = Number(dexIn.value);
+        dexIn.value = currentValue - 1;
+        dexOut.innerHTML = dexIn.value + ' Points' + ' +' + Math.floor((dexIn.value - 10) / 2) + ' Modifier';
+        dexAttPoints = dexIn.value - 8;
+        console.log(dexAttPoints, '<- dexterity attribute points');
+        poolUpdate();
+        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        if (dexIn.value == 8) {
+            conMinusButton.style.display = 'none';
+        }
+        if (pool < 30 && Number(conIn.value) < 18) {
+            conPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(strIn.value) < 18) {
+            strPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(dexIn.value) < 18) {
+            dexPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(achIn.value) < 18) {
+            achPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(caerIn.value) < 18) {
+            caerPlusButton.style.display = 'inline-block';
+        }
+        if (pool >= 30) {
+            conPlusButton.style.display = 'none';
+            strPlusButton.style.display = 'none';
+            dexPlusButton.style.display = 'none';
+            achPlusButton.style.display = 'none';
+            caerPlusButton.style.display = 'none';
+        }
+    });
+
+    dexPlusButton.addEventListener('click', event => {
+        event.preventDefault();
+        const currentValue = Number(dexIn.value);
+        dexIn.value = currentValue + 1;
+        dexOut.innerHTML = dexIn.value + ' Points' + ' +' + Math.floor((dexIn.value - 10) / 2) + ' Modifier';
+        dexAttPoints = dexIn.value - 8;
+        console.log(Number(dexIn.value), '<- dexIn.value in dexPlusButton event listener');
+        console.log(dexAttPoints, '<- dexength attribute points');
+        poolUpdate();
+        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        if (pool >= 30) {
+            conPlusButton.style.display = 'none';
+            strPlusButton.style.display = 'none';
+            dexPlusButton.style.display = 'none';
+            achPlusButton.style.display = 'none';
+            caerPlusButton.style.display = 'none';
+        }
+        if (Number(dexIn.value) >= 18) {
+            dexPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(conIn.value) > 8) {
+            conPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(strIn.value) > 8) {
+            strPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(dexIn.value) > 8) {
+            dexPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(achIn.value) > 8) {
+            achPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(caerIn.value) > 8) {
+            caerPlusButton.style.display = 'none';
+        }
+        if (Number(dexIn.value) > 8) {
+            dexMinusButton.style.display = 'inline-block';
+        }
+    });
+
+    achMinusButton.addEventListener('click', event => {
+        event.preventDefault();
+        const currentValue = Number(achIn.value);
+        achIn.value = currentValue - 1;
+        achOut.innerHTML = achIn.value + ' Points' + ' +' + Math.floor((achIn.value - 10) / 2) + ' Modifier';
+        achAttPoints = achIn.value - 8;
+        console.log(achAttPoints, '<- achre attribute points');
+        poolUpdate();
+        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        if (achIn.value == 8) {
+            achMinusButton.style.display = 'none';
+        }
+        if (pool < 30 && Number(conIn.value) < 18) {
+            conPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(strIn.value) < 18) {
+            strPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(dexIn.value) < 18) {
+            dexPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(achIn.value) < 18) {
+            achPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(caerIn.value) < 18) {
+            caerPlusButton.style.display = 'inline-block';
+        }
+        if (pool >= 30) {
+            conPlusButton.style.display = 'none';
+            strPlusButton.style.display = 'none';
+            dexPlusButton.style.display = 'none';
+            achPlusButton.style.display = 'none';
+            caerPlusButton.style.display = 'none';
+        }
+    });
+
+    achPlusButton.addEventListener('click', event => {
+        event.preventDefault();
+        const currentValue = Number(achIn.value);
+        achIn.value = currentValue + 1;
+        achOut.innerHTML = achIn.value + ' Points' + ' +' + Math.floor((achIn.value - 10) / 2) + ' Modifier';
+        achAttPoints = achIn.value - 8;
+        console.log(Number(achIn.value), '<- achIn.value in achPlusButton event listener');
+        console.log(achAttPoints, '<- achre attribute points');
+        poolUpdate();
+        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        if (pool >= 30) {
+            conPlusButton.style.display = 'none';
+            strPlusButton.style.display = 'none';
+            dexPlusButton.style.display = 'none';
+            achPlusButton.style.display = 'none';
+            caerPlusButton.style.display = 'none';
+        }
+        if (Number(achIn.value) >= 18) {
+            achPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(conIn.value) > 8) {
+            conPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(strIn.value) > 8) {
+            strPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(dexIn.value) > 8) {
+            dexPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(achIn.value) > 8) {
+            achPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(caerIn.value) > 8) {
+            caerPlusButton.style.display = 'none';
+        }
+        if (Number(achIn.value) > 8) {
+            achMinusButton.style.display = 'inline-block';
+        }
+    });
+
+    caerMinusButton.addEventListener('click', event => {
+        event.preventDefault();
+        const currentValue = Number(caerIn.value);
+        caerIn.value = currentValue - 1;
+        caerOut.innerHTML = caerIn.value + ' Points' + ' +' + Math.floor((caerIn.value - 10) / 2) + ' Modifier';
+        caerAttPoints = caerIn.value - 8;
+        console.log(caerAttPoints, '<- caer attribute points');
+        poolUpdate();
+        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        if (caerIn.value == 8) {
+            caerMinusButton.style.display = 'none';
+        }
+        if (pool < 30 && Number(conIn.value) < 18) {
+            conPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(strIn.value) < 18) {
+            strPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(dexIn.value) < 18) {
+            dexPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(achIn.value) < 18) {
+            achPlusButton.style.display = 'inline-block';
+        }
+        if (pool < 30 && Number(caerIn.value) < 18) {
+            caerPlusButton.style.display = 'inline-block';
+        }
+        if (pool >= 30) {
+            conPlusButton.style.display = 'none';
+            strPlusButton.style.display = 'none';
+            dexPlusButton.style.display = 'none';
+            achPlusButton.style.display = 'none';
+            caerPlusButton.style.display = 'none';
+        }
+    });
+
+    caerPlusButton.addEventListener('click', event => {
+        event.preventDefault();
+        const currentValue = Number(caerIn.value);
+        caerIn.value = currentValue + 1;
+        caerOut.innerHTML = caerIn.value + ' Points' + ' +' + Math.floor((caerIn.value - 10) / 2) + ' Modifier';
+        caerAttPoints = caerIn.value - 8;
+        console.log(Number(caerIn.value), '<- caerIn.value in caerPlusButton event listener');
+        console.log(caerAttPoints, '<- caeren attribute points');
+        poolUpdate();
+        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        if (pool >= 30) {
+            conPlusButton.style.display = 'none';
+            strPlusButton.style.display = 'none';
+            dexPlusButton.style.display = 'none';
+            achPlusButton.style.display = 'none';
+            caerPlusButton.style.display = 'none';
+        }
+        if (Number(caerIn.value) >= 18) {
+            caerPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(conIn.value) > 8) {
+            conPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(strIn.value) > 8) {
+            strPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(dexIn.value) > 8) {
+            dexPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(achIn.value) > 8) {
+            achPlusButton.style.display = 'none';
+        }
+        if (pool >= 30 && Number(caerIn.value) > 8) {
+            caerPlusButton.style.display = 'none';
+        }
+        if (Number(caerIn.value) > 8) {
+            caerMinusButton.style.display = 'inline-block';
+        }
+    });
+
+    let attributeTimer;
+    function sleep(ms) {
+        return new Promise(
+            resolve => setTimeout(resolve, ms)
+        );
+    }
+    async function poolUpdate() {
+        pool = conAttPoints + strAttPoints + dexAttPoints + achAttPoints + caerAttPoints;
+        console.log(pool, '<- new pool total')
+    }
+    function poolTimer() { 
+        if (!attributeTimer) {
+            attributeTimer = setInterval(poolUpdate, 3000);
+        return
+        }
+    }
+    function stopCompTimer() { 
+        clearInterval(attributeTimer);
+        attributeTimer = null;
+        return
+    }
+    poolTimer();
+
+</script>
+
+{% endblock %}

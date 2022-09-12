@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Profile
+from .models import Character, Profile
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -11,3 +11,8 @@ class ProfileForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+class CharCreateForm(forms.ModelForm):
+    class Meta:
+        model = Character
+        fields = '__all__'
