@@ -154,15 +154,53 @@ class Trinket(models.Model):
 #   choices=FAITHS,
 #   default=FAITHS[0][0])
 
+POOL = 30
+
+# choices = ATTRIBUTES,
+# POOL - ATTRIBUTES
+
+ATTRIBUTES = (
+    (0, 8),
+    (1, 9),
+    (2, 10),
+    (3, 11),
+    (4, 12),
+    (5, 13),
+    (6, 14),
+    (7, 15),
+    (8, 16),
+    (9, 17),
+    (10, 18)
+)
+
 class Character(models.Model):
     name = models.CharField(max_length=24)
     description = models.TextField(max_length=240)
-    constitution = models.PositiveSmallIntegerField()
-    strength = models.PositiveSmallIntegerField()
-    dexterity = models.PositiveSmallIntegerField()
-    achre = models.PositiveSmallIntegerField()
-    caer = models.PositiveSmallIntegerField()
-    # weapon_one = models.Weapon.get(id=weapon_id)
+    constitution = models.CharField(
+        max_length=2,
+        choices=ATTRIBUTES,
+        default=ATTRIBUTES[0][0]
+    )
+    strength = models.CharField(
+        max_length=2,
+        choices=ATTRIBUTES,
+        default=ATTRIBUTES[0][0]
+    )
+    dexterity = models.CharField(
+        max_length=2,
+        choices=ATTRIBUTES,
+        default=ATTRIBUTES[0][0]
+    )
+    achreon = models.CharField(
+        max_length=2,
+        choices=ATTRIBUTES,
+        default=ATTRIBUTES[0][0]
+    )
+    caeren = models.CharField(
+        max_length=2,
+        choices=ATTRIBUTES,
+        default=ATTRIBUTES[0][0]
+    )
     weapon_one = models.ManyToManyField(Weapon, related_name='weapon_one')
     weapon_two = models.ManyToManyField(Weapon, related_name='weapon_two')
     shield = models.ManyToManyField(Shield)
