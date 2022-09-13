@@ -4,8 +4,7 @@
 
 <h1>List</h1>
 
-<div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
-    
+<div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">    
     {% for trinket in trinkets %}
     <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
     title="{{ trinket.name }} [{{ trinket.type }}] <img src='{% static '/images' %}{{ trinket.img_URL }}'>"

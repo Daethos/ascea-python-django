@@ -94,10 +94,16 @@
         {% endfor %}
     </div>
     
+    <div class="row">
+        <div class="col-3 offset-3">
         <p class="text-info">{{form.weapon_one.label}}</p>
         {{ form.weapon_one }}
+        </div>
+        <div class="col-3">
         <p class="text-info">{{form.weapon_two.label}}</p>
         {{ form.weapon_two }}
+        </div>
+    </div>
 
     <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
         <h3 class="text-info">Shields</h3>
@@ -183,25 +189,91 @@
         <p class="text-info">{{form.legs.label}}</p>
         {{ form.legs }}
 
-
+    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
+        <h3 class="text-info">Rings</h3>   
+        {% for ring in rings %}
+        <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
+        title="{{ ring.name }} [{{ ring.type }}] <img src='{% static '/images' %}{{ ring.img_URL }}'>"
+        data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
+        data-bs-content="Attack Type: {{ ring.attack_type }}<br>
+        Damage Type: {{ ring.damage_type }}<br>
+        Physical Defense: {{ ring.physical_resistance }}<br>
+        Magic Defense: {{ ring.magical_resistance }}<br>
+        Physical Damage: {{ ring.physical_damage }}<br>
+        Magic Damage: {{ ring.magical_damage }}<br>
+        Crit Chance: +{{ ring.critical_chance }}%<br>
+        Crit Damage: x{{ ring.critical_damage }}<br>
+        Dodge: +{{ ring.dodge }}%<br>
+        Roll Timer: +{{ ring.roll }}s">{{ ring.name }}</a>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-3 offset-3">
         <p class="text-info">{{form.ring_one.label}}</p>
         {{ form.ring_one }}
+        </div>
+        <div class="col-3">
         <p class="text-info">{{form.ring_two.label}}</p>
         {{ form.ring_two }}
+        </div>
+    </div>
 
 
+    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
+        <h3 class="text-info">Amulets</h3>    
+        {% for amulet in amulets %}
+        <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
+        title="{{ amulet.name }} [{{ amulet.type }}] <img src='{% static '/images' %}{{ amulet.img_URL }}'>"
+        data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
+        data-bs-content="Attack Type: {{ amulet.attack_type }}<br>
+        Damage Type: {{ amulet.damage_type }}<br>
+        Physical Defense: {{ amulet.physical_resistance }}<br>
+        Magic Defense: {{ amulet.magical_resistance }}<br>
+        Physical Damage: {{ amulet.physical_damage }}<br>
+        Magic Damage: {{ amulet.magical_damage }}<br>
+        Crit Chance: +{{ amulet.critical_chance }}%<br>
+        Crit Damage: x{{ amulet.critical_damage }}<br>
+        Dodge: +{{ amulet.dodge }}%<br>
+        Roll Timer: +{{ amulet.roll }}s">{{ amulet.name }}</a>
+        {% endfor %}
+    </div>
         <p class="text-info">{{form.amulet.label}}</p>
         {{ form.amulet }}
 
 
+    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
+        <h3 class="text-info">Trinkets</h3>    
+        {% for trinket in trinkets %}
+        <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
+        title="{{ trinket.name }} [{{ trinket.type }}] <img src='{% static '/images' %}{{ trinket.img_URL }}'>"
+        data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
+        data-bs-content="Attack Type: {{ trinket.attack_type }}<br>
+        Damage Type: {{ trinket.damage_type }}<br>
+        Physical Defense: {{ trinket.physical_resistance }}<br>
+        Magic Defense: {{ trinket.magical_resistance }}<br>
+        Physical Damage: {{ trinket.physical_damage }}<br>
+        Magic Damage: {{ trinket.magical_damage }}<br>
+        Crit Chance: +{{ trinket.critical_chance }}%<br>
+        Crit Damage: x{{ trinket.critical_damage }}<br>
+        Dodge: +{{ trinket.dodge }}%<br>
+        Roll Timer: +{{ trinket.roll }}s">{{ trinket.name }}</a>
+        {% endfor %}
+    </div>
         <p class="text-info">{{form.trinket.label}}</p>
         {{ form.trinket }}
 
-
-        <p class="text-info">{{form.adherent.label}}</p>
+    <div class="row">
+        <div class="col-3 offset-3">
+        <h3 class="text-info">{{form.adherent.label}} ?</h3>
+        <p class="text-info">Worshiper of the Ancients</p>
         {{ form.adherent }}
-        <p class="text-info">{{form.devoted.label}}</p>
+        </div>
+        <div class="col-3">
+        <h3 class="text-info">{{form.devoted.label}} ?</h3>
+        <p class="text-info">Worshiper of Daethos</p>
         {{ form.devoted }}
+        </div>
+    </div>
     </div>
     <input type="submit" value="Submit!" class="btn">
 </form>
