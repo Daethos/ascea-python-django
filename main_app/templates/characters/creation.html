@@ -113,8 +113,8 @@
         data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
         data-bs-content="Attack Type: {{ shield.attack_type }}<br>
         Damage Type: {{ shield.damage_type }}<br>
-        Physical Defense: {{ shield.physical_resistance }}<br>
-        Magic Defense: {{ shield.magical_resistance }}<br>
+        Physical Defense: +{{ shield.physical_resistance }}%<br>
+        Magic Defense: +{{ shield.magical_resistance }}%<br>
         Physical Damage: {{ shield.physical_damage }}<br>
         Magic Damage: {{ shield.magical_damage }}<br>
         Crit Chance: +{{ shield.critical_chance }}%<br>
@@ -132,10 +132,9 @@
         <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
         title="{{ helm.name }} [{{ helm.type }}] <img src='{% static '/images' %}{{ helm.img_URL }}'>"
         data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
-        data-bs-content="Attack Type: {{ helm.attack_type }}<br>
-        Damage Type: {{ helm.damage_type }}<br>
-        Physical Defense: {{ helm.physical_resistance }}<br>
-        Magic Defense: {{ helm.magical_resistance }}<br>
+        data-bs-content="Type: {{ helm.type }}<br>
+        Physical Defense: +{{ helm.physical_resistance }}%<br>
+        Magic Defense: +{{ helm.magical_resistance }}%<br>
         Physical Damage: {{ helm.physical_damage }}<br>
         Magic Damage: {{ helm.magical_damage }}<br>
         Crit Chance: +{{ helm.critical_chance }}%<br>
@@ -153,8 +152,7 @@
         <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
         title="{{ chest.name }} [{{ chest.type }}] <img src='{% static '/images' %}{{ chest.img_URL }}'>"
         data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
-        data-bs-content="Attack Type: {{ chest.attack_type }}<br>
-        Damage Type: {{ chest.damage_type }}<br>
+        data-bs-content="Type: {{ chest.type }}<br>
         Physical Defense: +{{ chest.physical_resistance }}%<br>
         Magic Defense: +{{ chest.magical_resistance }}%<br>
         Physical Damage: {{ chest.physical_damage }}x<br>
@@ -174,10 +172,9 @@
         <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
         title="{{ leg.name }} [{{ leg.type }}] <img src='{% static '/images' %}{{ leg.img_URL }}'>"
         data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
-        data-bs-content="Attack Type: {{ leg.attack_type }}<br>
-        Damage Type: {{ leg.damage_type }}<br>
-        Physical Defense: {{ leg.physical_resistance }}<br>
-        Magic Defense: {{ leg.magical_resistance }}<br>
+        data-bs-content="Type: {{ leg.type }}<br>
+        Physical Defense: +{{ leg.physical_resistance }}%<br>
+        Magic Defense: +{{ leg.magical_resistance }}%<br>
         Physical Damage: {{ leg.physical_damage }}<br>
         Magic Damage: {{ leg.magical_damage }}<br>
         Crit Chance: +{{ leg.critical_chance }}%<br>
@@ -197,8 +194,8 @@
         data-bs-html="true" data-bs-trigger="focus" data-bs-placement="bottom"
         data-bs-content="Attack Type: {{ ring.attack_type }}<br>
         Damage Type: {{ ring.damage_type }}<br>
-        Physical Defense: {{ ring.physical_resistance }}<br>
-        Magic Defense: {{ ring.magical_resistance }}<br>
+        Physical Defense: +{{ ring.physical_resistance }}%<br>
+        Magic Defense: +{{ ring.magical_resistance }}%<br>
         Physical Damage: {{ ring.physical_damage }}<br>
         Magic Damage: {{ ring.magical_damage }}<br>
         Crit Chance: +{{ ring.critical_chance }}%<br>
@@ -555,7 +552,7 @@
         poolUpdate();
         poolOutput.innerHTML = pool + ' Points / 30 Points';
         if (dexIn.value == 8) {
-            conMinusButton.style.display = 'none';
+            dexMinusButton.style.display = 'none';
         }
         if (pool < 30 && Number(conIn.value) < 18) {
             conPlusButton.style.display = 'inline-block';
