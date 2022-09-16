@@ -9,7 +9,9 @@
 {% if object %}
     <h1>Edit <span class="text-info">{{object.name}}</span></h1>
 {% else %}
-    <h1 class="text-info">New Champion!</h1>
+<div class="jumbotron">
+    <h1 class="display-1 text-info mt-3">New Champion!</h1>
+</div>
 {% endif %}
 <!-- Leaving the action empty makes the form post to the same url used to display it -->
 <form action="" method="POST">
@@ -17,14 +19,32 @@
     {% csrf_token %}
     <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
         <!-- Render the inputs inside of <tr>s & <td>s -->
-        <p class="text-info">{{form.name.label}}</p>
-        {{ form.name }}
+        <h1 class="text-info">Character Name</h1> 
+        <input type="text" class="bg-black text-info" value="{{ form.name.id }}" name="name">
+        <!-- {{ form.name }} -->
+        <input type="submit" value="Create!" class="btn btn-lg btn-outline-info">
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
-        <p class="text-info">{{form.description.label}}</p>
-        {{ form.description }}
+        <h1 class="text-info">Character Description</h1>
+        <!-- {{ form.description }} -->
     </div>
-    <div class="col-10 bg-black text-center offset-1 p-3 mt-5 border border-info">
+    <div class="form-floating text-start col-10 offset-1">
+        <textarea class="form-control border border-info bg-black text-info" style="min-height: 125px; max-height: 250px" name="description" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+        <label for="floatingTextarea" class="text-danger">WARNING: No Profanity Filter!!</label>
+    </div>
+    
+<div class="col-10 bg-black text-center offset-1 p-3 mt-5 border border-info">
+    <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h1 class="accordion-header" id="headingOne">
+            <button class="accordion-button bg-black text-info" style="text-align: center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAttributes" aria-expanded="true" aria-controls="collapseAttributes">
+                <h2 style="text-align: center">Attributes</h2>
+            </button>
+        </h1>
+    </div>
+    <!-- <div class="col-10 bg-black text-center offset-1 p-3  border border-info"> -->
+    <div id="collapseAttributes" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
         <h3 class="text-info" id="pool-output"></h3>
     </div>
     <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">
@@ -76,28 +96,41 @@
             <input id="caer-slider" class="form-control-number" type="number" name="caer" value="{{form_query.caer}}" min="8" default="8" max="18" placeholder="8" step="1" readonly>
         <button id="caer-plus" max="18">+</button>    
             <output class="text-info" id="caer-box">{{form_query.caer}} Points</output>    
+            </div>
+        </div>
+        </div>
     </div>
-    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
-        <h1 class="text-info">Weapons</h1>
+<div class="col-10 bg-black text-center offset-1 p-3 mt-5 border border-info">
+    <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h1 class="accordion-header" id="headingOne">
+            <button class="accordion-button bg-black text-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEquipment" aria-expanded="true" aria-controls="collapseEquipment">
+                <h2 style="text-align: center">Equipment</h2>
+            </button>
+        </h1>
     </div>
-    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+    <!-- <div class="col-10 bg-black text-center offset-1 p-3  border border-info"> -->
+    <div id="collapseEquipment" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+        <h1 class="text-info mt-3">Weapons</h1>
+
         <div class="row">
-            <div class="col-3 offset-3">
+            <div class="col-2 offset-1">
                 <p class="text-info">{{form.weapon_one.label}}</p>
             </div>
-            <div class="col-3">
+            <div class="col-2 offset-6">
                 <p class="text-info">{{form.weapon_two.label}}</p>
             </div>
         </div>
         <div class="row">
-            <div class="col-3 offset-3">
+            <div class="col-2 offset-1">
         <select class="btn btn-outline-success" name="weapon_one" id="weapon-menu">
             {% for weapon in weapons %}
             <option value="{{ weapon.id }}">{{ weapon.name }}</option>
             {% endfor %}
         </select>
             </div>
-            <div class="col-3">
+            <div class="col-2 offset-6">
         <select class="btn btn-outline-success" name="weapon_two" id="weapon-menu">
             {% for weapon in weapons %}
             <option value="{{ weapon.id }}">{{ weapon.name }}</option>
@@ -119,7 +152,6 @@
         Dodge: +{{ weapon.dodge }}%<br>
         Roll Timer: +{{ weapon.roll }}s">{{ weapon.name }}</a>
         {% endfor %}
-    </div>
     
     <!-- <div class="row">
         <div class="col-3 offset-3">
@@ -132,10 +164,9 @@
         </div>
     </div> -->
 
-    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
-        <h1 class="text-info">Shields</h1>
-    </div>
-    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+ 
+        <h1 class="text-info mt-5">Shields</h1>
+
         <select class="btn btn-outline-success" name="shield" id="shield-menu">
             {% for shield in shields %}
             <option value="{{ shield.id }}">{{ shield.name }}</option>
@@ -156,14 +187,13 @@
         Dodge: +{{ shield.dodge }}%<br>
         Roll Timer: +{{ shield.roll }}s">{{ shield.name }}</a>
         {% endfor %}
-    </div>
+    
         <!-- <p class="text-info">{{form.shield.label}}</p>
         {{ form.shield }} -->
 
-        <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
-            <h1 class="text-info">Helmets</h1>
-        </div>
-        <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+          
+            <h1 class="text-info mt-5">Helmets</h1>
+        
             <select class="btn btn-outline-success" name="helm" id="helm-menu">
                 {% for helm in helmets %}
                 <option value="{{ helm.id }}">{{ helm.name }}</option>
@@ -183,14 +213,9 @@
         Dodge: +{{ helm.dodge }}%<br>
         Roll Timer: +{{ helm.roll }}s">{{ helm.name }}</a>
         {% endfor %}
-    </div>
-        <!-- <p class="text-info">{{form.helm.label}}</p>
-        {{ form.helm }} -->
-
-    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
-        <h1 class="text-info">Chests</h1>
-    </div>
-    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+      
+        <h1 class="text-info mt-5">Chests</h1>
+    
         <select class="btn btn-outline-success" name="chest" id="chest-menu">
             {% for chest in chests %}
             <option value="{{ chest.id }}">{{ chest.name }}</option>
@@ -210,13 +235,11 @@
         Dodge: +{{ chest.dodge }}%<br>
         Roll Timer: +{{ chest.roll }}s">{{ chest.name }}</a>
         {% endfor %}
-    </div>
 
 
-    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
-        <h1 class="text-info">Legs</h1>
-    </div>
-    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+      
+        <h1 class="text-info mt-5">Legs</h1>
+
         <select class="btn btn-outline-success" name="leg" id="leg-menu">
             {% for leg in legs %}
             <option value="{{ leg.id }}">{{ leg.name }}</option>
@@ -236,14 +259,13 @@
         Dodge: +{{ leg.dodge }}%<br>
         Roll Timer: +{{ leg.roll }}s">{{ leg.name }}</a>
         {% endfor %}
-    </div>
+   
         <!-- <p class="text-info">{{form.legs.label}}</p>
         {{ form.legs }} -->
 
-    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
-        <h1 class="text-info">Rings</h1>
-    </div>
-    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+     
+        <h1 class="text-info mt-5">Rings</h1>
+    
         <div class="row">
             <div class="col-3 offset-3">
                 <p class="text-info">{{form.ring_one.label}}</p>
@@ -284,7 +306,7 @@
         Dodge: +{{ ring.dodge }}%<br>
         Roll Timer: +{{ ring.roll }}s">{{ ring.name }}</a>
         {% endfor %}
-    </div>
+    
     <!-- <div class="row">
         <div class="col-3 offset-3">
         <p class="text-info">{{form.ring_one.label}}</p>
@@ -297,10 +319,9 @@
     </div> -->
 
 
-    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
-        <h1 class="text-info">Amulets</h1>
-    </div>
-    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+     
+        <h1 class="text-info mt-5">Amulets</h1>
+
         <select class="btn btn-outline-success" name="amulet" id="amulet-menu">
             {% for amulet in amulets %}
             <option value="{{ amulet.id }}">{{ amulet.name }}</option>
@@ -321,15 +342,14 @@
         Dodge: +{{ amulet.dodge }}%<br>
         Roll Timer: +{{ amulet.roll }}s">{{ amulet.name }}</a>
         {% endfor %}
-    </div>
+   
         <!-- <p class="text-info">{{form.amulet.label}}</p>
         {{ form.amulet }} -->
 
 
-        <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
-            <h1 class="text-info">Trinkets</h1>
-        </div>
-        <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+         
+            <h1 class="text-info mt-5">Trinkets</h1>
+
             <select class="btn btn-outline-success" name="trinket" id="trinket-menu">
                 {% for trinket in trinkets %}
                 <option value="{{ trinket.id }}">{{ trinket.name }}</option>
@@ -350,33 +370,88 @@
         Dodge: +{{ trinket.dodge }}%<br>
         Roll Timer: +{{ trinket.roll }}s">{{ trinket.name }}</a>
         {% endfor %}
-    </div>
+    
         <!-- <p class="text-info">{{form.trinket.label}}</p>
         {{ form.trinket }} -->
+    </div>
+    </div>
+    </div>
+    </div>
 
+    <div class="col-10 bg-black text-center offset-1 p-3 mt-5 border border-info">
+        <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h1 class="accordion-header" id="headingOne">
+                <button class="accordion-button bg-black text-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFaith" aria-expanded="true" aria-controls="collapseFaith">
+                    <h2 style="text-align: center">Faith</h2>
+                </button>
+            </h1>
+        </div>
+        <!-- <div class="col-10 bg-black text-center offset-1 p-3  border border-info"> -->
+        <div id="collapseFaith" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
     <div class="row">
-        <div class="col-3 offset-3">
+        <div class="col-2 offset-2">
         <h3 class="text-info">{{form.adherent.label}} ?</h3>
         <p class="text-info">Worshiper of the Ancients</p>
+    <div id="adherent">
         {{ form.adherent }}
+        <!-- <input type="checkbox" name="adherent"  id="adherent_id"> -->
+    </div>
+
         </div>
-        <div class="col-3">
+        <div class="col-2 offset-4">
         <h3 class="text-info">{{form.devoted.label}} ?</h3>
         <p class="text-info">Worshiper of Daethos</p>
-        {{ form.devoted }}
+
+        <div id="devoted">
+            {{ form.devoted }}
         </div>
+
+
+        </div>
+
+        </div></div></div></div>
+
     </div>
     </div>
-    <input type="submit" value="Submit!" class="btn">
 </form>
 </div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+    let devoted = document.getElementById('devoted');
+    let adherent = document.getElementById('adherent');
+
+    adherent.addEventListener('change', (e) => {
+        console.log('adherent checkbox firing');
+        console.log(adherent, '<- this is adherent')
+        console.log(devoted.style, '<- the devoted style');
+        console.log(e.target.checked, '<- adherent.checked');
+        if (e.target.checked === true) {
+            devoted.style.display = 'none';
+        } else {
+            devoted.style.display = 'inline-block';
+        }
+       
+    });
+
+    devoted.addEventListener('change', (e) => {
+        console.log('devoted checkbox firing');
+        console.log(devoted, '<- this is devoted')
+        console.log(adherent.style, '<- the devoted style');
+        console.log(e.target.checked, '<- devoted.checked');
+        if (e.target.checked === true) {
+            adherent.style.display = 'none';
+        } else {
+            adherent.style.display = 'inline-block';
+        }
+    }); 
+
     let pool = 0;
     let poolOutput = document.getElementById('pool-output');
-    poolOutput.innerHTML = pool + ' Points / 30 Points';
+    poolOutput.innerHTML = pool + ' Points / 25 Points';
 
     let conIn = document.getElementById('con-slider');
     let conOut = document.getElementById('con-box');
@@ -436,12 +511,12 @@
                 console.log(caerAttPoints, '<- caer attribute points');
                 console.log(pool, '<- new pool total')
                 poolUpdate();
-                poolOutput.innerHTML = pool + ' Points / 30 Points';
-                if (pool >= 30) {
+                poolOutput.innerHTML = pool + ' Points / 25 Points';
+                if (pool >= 25) {
 
                 }
             }
-            if (pool >= 30 && (conAttPoints > conIn.value - 8 || strAttPoints > strIn.value - 8 || dexAttPoints > dexIn.value - 8 || achAttPoints > achIn.value - 8 || caerAttPoints > caerIn.value - 8)) {
+            if (pool >= 25 && (conAttPoints > conIn.value - 8 || strAttPoints > strIn.value - 8 || dexAttPoints > dexIn.value - 8 || achAttPoints > achIn.value - 8 || caerAttPoints > caerIn.value - 8)) {
                 conOut.innerHTML = conIn.value + ' Points';
                 conAttPoints = conIn.value - 8;
                 console.log(strAttPoints, '<- constitution attribute points');
@@ -460,8 +535,8 @@
                 // pool = conAttPoints + strAttPoints + dexAttPoints + achAttPoints + caerAttPoints;
                 console.log(pool, '<- new pool total')
                 poolUpdate();
-                poolOutput.innerHTML = pool + ' Points / 30 Points';
-                if (pool >= 30) {
+                poolOutput.innerHTML = pool + ' Points / 25 Points';
+                if (pool >= 25) {
 
                 }
             }
@@ -491,26 +566,26 @@
         conAttPoints = conIn.value - 8;
         console.log(strAttPoints, '<- constitution attribute points');
         poolUpdate();
-        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        poolOutput.innerHTML = pool + ' Points / 25 Points';
         if (conIn.value == 8) {
             conMinusButton.style.display = 'none';
         }
-        if (pool < 30 && Number(conIn.value) < 18) {
+        if (pool < 25 && Number(conIn.value) < 18) {
             conPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(strIn.value) < 18) {
+        if (pool < 25 && Number(strIn.value) < 18) {
             strPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(dexIn.value) < 18) {
+        if (pool < 25 && Number(dexIn.value) < 18) {
             dexPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(achIn.value) < 18) {
+        if (pool < 25 && Number(achIn.value) < 18) {
             achPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(caerIn.value) < 18) {
+        if (pool < 25 && Number(caerIn.value) < 18) {
             caerPlusButton.style.display = 'inline-block';
         }
-        if (pool >= 30) {
+        if (pool >= 25) {
             conPlusButton.style.display = 'none';
             strPlusButton.style.display = 'none';
             dexPlusButton.style.display = 'none';
@@ -529,8 +604,8 @@
         console.log(Number(conIn.value), '<- conIn.value in conPlusButton event listener');
         console.log(strAttPoints, '<- constitution attribute points');
         poolUpdate();
-        poolOutput.innerHTML = pool + ' Points / 30 Points';
-        if (pool >= 30) {
+        poolOutput.innerHTML = pool + ' Points / 25 Points';
+        if (pool >= 25) {
             conPlusButton.style.display = 'none';
             strPlusButton.style.display = 'none';
             dexPlusButton.style.display = 'none';
@@ -540,19 +615,19 @@
         if (Number(conIn.value) >= 18) {
             conPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(conIn.value) > 8) {
+        if (pool >= 25 && Number(conIn.value) > 8) {
             conPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(strIn.value) > 8) {
+        if (pool >= 25 && Number(strIn.value) > 8) {
             strPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(dexIn.value) > 8) {
+        if (pool >= 25 && Number(dexIn.value) > 8) {
             dexPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(achIn.value) > 8) {
+        if (pool >= 25 && Number(achIn.value) > 8) {
             achPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(caerIn.value) > 8) {
+        if (pool >= 25 && Number(caerIn.value) > 8) {
             caerPlusButton.style.display = 'none';
         }
         if (Number(conIn.value) > 8) {
@@ -568,26 +643,26 @@
         strAttPoints = strIn.value - 8;
         console.log(strAttPoints, '<- strength attribute points');
         poolUpdate();
-        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        poolOutput.innerHTML = pool + ' Points / 25 Points';
         if (strIn.value == 8) {
             strMinusButton.style.display = 'none';
         }
-        if (pool < 30 && Number(conIn.value) < 18) {
+        if (pool < 25 && Number(conIn.value) < 18) {
             conPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(strIn.value) < 18) {
+        if (pool < 25 && Number(strIn.value) < 18) {
             strPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(dexIn.value) < 18) {
+        if (pool < 25 && Number(dexIn.value) < 18) {
             dexPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(achIn.value) < 18) {
+        if (pool < 25 && Number(achIn.value) < 18) {
             achPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(caerIn.value) < 18) {
+        if (pool < 25 && Number(caerIn.value) < 18) {
             caerPlusButton.style.display = 'inline-block';
         }
-        if (pool >= 30) {
+        if (pool >= 25) {
             conPlusButton.style.display = 'none';
             strPlusButton.style.display = 'none';
             dexPlusButton.style.display = 'none';
@@ -606,8 +681,8 @@
         console.log(Number(strIn.value), '<- strIn.value in strPlusButton event listener');
         console.log(strAttPoints, '<- strength attribute points');
         poolUpdate();
-        poolOutput.innerHTML = pool + ' Points / 30 Points';
-        if (pool >= 30) {
+        poolOutput.innerHTML = pool + ' Points / 25 Points';
+        if (pool >= 25) {
             conPlusButton.style.display = 'none';
             strPlusButton.style.display = 'none';
             dexPlusButton.style.display = 'none';
@@ -617,19 +692,19 @@
         if (Number(strIn.value) >= 18) {
             strPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(conIn.value) > 8) {
+        if (pool >= 25 && Number(conIn.value) > 8) {
             conPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(strIn.value) > 8) {
+        if (pool >= 25 && Number(strIn.value) > 8) {
             strPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(dexIn.value) > 8) {
+        if (pool >= 25 && Number(dexIn.value) > 8) {
             dexPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(achIn.value) > 8) {
+        if (pool >= 25 && Number(achIn.value) > 8) {
             achPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(caerIn.value) > 8) {
+        if (pool >= 25 && Number(caerIn.value) > 8) {
             caerPlusButton.style.display = 'none';
         }
         if (Number(strIn.value) > 8) {
@@ -645,26 +720,26 @@
         dexAttPoints = dexIn.value - 8;
         console.log(dexAttPoints, '<- dexterity attribute points');
         poolUpdate();
-        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        poolOutput.innerHTML = pool + ' Points / 25 Points';
         if (dexIn.value == 8) {
             dexMinusButton.style.display = 'none';
         }
-        if (pool < 30 && Number(conIn.value) < 18) {
+        if (pool < 25 && Number(conIn.value) < 18) {
             conPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(strIn.value) < 18) {
+        if (pool < 25 && Number(strIn.value) < 18) {
             strPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(dexIn.value) < 18) {
+        if (pool < 25 && Number(dexIn.value) < 18) {
             dexPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(achIn.value) < 18) {
+        if (pool < 25 && Number(achIn.value) < 18) {
             achPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(caerIn.value) < 18) {
+        if (pool < 25 && Number(caerIn.value) < 18) {
             caerPlusButton.style.display = 'inline-block';
         }
-        if (pool >= 30) {
+        if (pool >= 25) {
             conPlusButton.style.display = 'none';
             strPlusButton.style.display = 'none';
             dexPlusButton.style.display = 'none';
@@ -682,8 +757,8 @@
         console.log(Number(dexIn.value), '<- dexIn.value in dexPlusButton event listener');
         console.log(dexAttPoints, '<- dexength attribute points');
         poolUpdate();
-        poolOutput.innerHTML = pool + ' Points / 30 Points';
-        if (pool >= 30) {
+        poolOutput.innerHTML = pool + ' Points / 25 Points';
+        if (pool >= 25) {
             conPlusButton.style.display = 'none';
             strPlusButton.style.display = 'none';
             dexPlusButton.style.display = 'none';
@@ -693,19 +768,19 @@
         if (Number(dexIn.value) >= 18) {
             dexPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(conIn.value) > 8) {
+        if (pool >= 25 && Number(conIn.value) > 8) {
             conPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(strIn.value) > 8) {
+        if (pool >= 25 && Number(strIn.value) > 8) {
             strPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(dexIn.value) > 8) {
+        if (pool >= 25 && Number(dexIn.value) > 8) {
             dexPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(achIn.value) > 8) {
+        if (pool >= 25 && Number(achIn.value) > 8) {
             achPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(caerIn.value) > 8) {
+        if (pool >= 25 && Number(caerIn.value) > 8) {
             caerPlusButton.style.display = 'none';
         }
         if (Number(dexIn.value) > 8) {
@@ -721,26 +796,26 @@
         achAttPoints = achIn.value - 8;
         console.log(achAttPoints, '<- achre attribute points');
         poolUpdate();
-        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        poolOutput.innerHTML = pool + ' Points / 25 Points';
         if (achIn.value == 8) {
             achMinusButton.style.display = 'none';
         }
-        if (pool < 30 && Number(conIn.value) < 18) {
+        if (pool < 25 && Number(conIn.value) < 18) {
             conPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(strIn.value) < 18) {
+        if (pool < 25 && Number(strIn.value) < 18) {
             strPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(dexIn.value) < 18) {
+        if (pool < 25 && Number(dexIn.value) < 18) {
             dexPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(achIn.value) < 18) {
+        if (pool < 25 && Number(achIn.value) < 18) {
             achPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(caerIn.value) < 18) {
+        if (pool < 25 && Number(caerIn.value) < 18) {
             caerPlusButton.style.display = 'inline-block';
         }
-        if (pool >= 30) {
+        if (pool >= 25) {
             conPlusButton.style.display = 'none';
             strPlusButton.style.display = 'none';
             dexPlusButton.style.display = 'none';
@@ -758,8 +833,8 @@
         console.log(Number(achIn.value), '<- achIn.value in achPlusButton event listener');
         console.log(achAttPoints, '<- achre attribute points');
         poolUpdate();
-        poolOutput.innerHTML = pool + ' Points / 30 Points';
-        if (pool >= 30) {
+        poolOutput.innerHTML = pool + ' Points / 25 Points';
+        if (pool >= 25) {
             conPlusButton.style.display = 'none';
             strPlusButton.style.display = 'none';
             dexPlusButton.style.display = 'none';
@@ -769,19 +844,19 @@
         if (Number(achIn.value) >= 18) {
             achPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(conIn.value) > 8) {
+        if (pool >= 25 && Number(conIn.value) > 8) {
             conPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(strIn.value) > 8) {
+        if (pool >= 25 && Number(strIn.value) > 8) {
             strPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(dexIn.value) > 8) {
+        if (pool >= 25 && Number(dexIn.value) > 8) {
             dexPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(achIn.value) > 8) {
+        if (pool >= 25 && Number(achIn.value) > 8) {
             achPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(caerIn.value) > 8) {
+        if (pool >= 25 && Number(caerIn.value) > 8) {
             caerPlusButton.style.display = 'none';
         }
         if (Number(achIn.value) > 8) {
@@ -797,26 +872,26 @@
         caerAttPoints = caerIn.value - 8;
         console.log(caerAttPoints, '<- caer attribute points');
         poolUpdate();
-        poolOutput.innerHTML = pool + ' Points / 30 Points';
+        poolOutput.innerHTML = pool + ' Points / 25 Points';
         if (caerIn.value == 8) {
             caerMinusButton.style.display = 'none';
         }
-        if (pool < 30 && Number(conIn.value) < 18) {
+        if (pool < 25 && Number(conIn.value) < 18) {
             conPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(strIn.value) < 18) {
+        if (pool < 25 && Number(strIn.value) < 18) {
             strPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(dexIn.value) < 18) {
+        if (pool < 25 && Number(dexIn.value) < 18) {
             dexPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(achIn.value) < 18) {
+        if (pool < 25 && Number(achIn.value) < 18) {
             achPlusButton.style.display = 'inline-block';
         }
-        if (pool < 30 && Number(caerIn.value) < 18) {
+        if (pool < 25 && Number(caerIn.value) < 18) {
             caerPlusButton.style.display = 'inline-block';
         }
-        if (pool >= 30) {
+        if (pool >= 25) {
             conPlusButton.style.display = 'none';
             strPlusButton.style.display = 'none';
             dexPlusButton.style.display = 'none';
@@ -834,8 +909,8 @@
         console.log(Number(caerIn.value), '<- caerIn.value in caerPlusButton event listener');
         console.log(caerAttPoints, '<- caeren attribute points');
         poolUpdate();
-        poolOutput.innerHTML = pool + ' Points / 30 Points';
-        if (pool >= 30) {
+        poolOutput.innerHTML = pool + ' Points / 25 Points';
+        if (pool >= 25) {
             conPlusButton.style.display = 'none';
             strPlusButton.style.display = 'none';
             dexPlusButton.style.display = 'none';
@@ -845,19 +920,19 @@
         if (Number(caerIn.value) >= 18) {
             caerPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(conIn.value) > 8) {
+        if (pool >= 25 && Number(conIn.value) > 8) {
             conPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(strIn.value) > 8) {
+        if (pool >= 25 && Number(strIn.value) > 8) {
             strPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(dexIn.value) > 8) {
+        if (pool >= 25 && Number(dexIn.value) > 8) {
             dexPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(achIn.value) > 8) {
+        if (pool >= 25 && Number(achIn.value) > 8) {
             achPlusButton.style.display = 'none';
         }
-        if (pool >= 30 && Number(caerIn.value) > 8) {
+        if (pool >= 25 && Number(caerIn.value) > 8) {
             caerPlusButton.style.display = 'none';
         }
         if (Number(caerIn.value) > 8) {
