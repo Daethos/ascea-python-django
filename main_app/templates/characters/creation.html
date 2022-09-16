@@ -77,8 +77,35 @@
         <button id="caer-plus" max="18">+</button>    
             <output class="text-info" id="caer-box">{{form_query.caer}} Points</output>    
     </div>
-    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
-        <h3 class="text-info">Weapons</h3>
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
+        <h1 class="text-info">Weapons</h1>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+        <div class="row">
+            <div class="col-3 offset-3">
+                <p class="text-info">{{form.weapon_one.label}}</p>
+            </div>
+            <div class="col-3">
+                <p class="text-info">{{form.weapon_two.label}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3 offset-3">
+        <select class="btn btn-outline-success" name="weapon_one" id="weapon-menu">
+            {% for weapon in weapons %}
+            <option value="{{ weapon.id }}">{{ weapon.name }}</option>
+            {% endfor %}
+        </select>
+            </div>
+            <div class="col-3">
+        <select class="btn btn-outline-success" name="weapon_two" id="weapon-menu">
+            {% for weapon in weapons %}
+            <option value="{{ weapon.id }}">{{ weapon.name }}</option>
+            {% endfor %}
+        </select>
+            </div>
+        </div>
+        <br /><br />
         {% for weapon in weapons %}
         <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
         title="<a href='{% url 'detail.weapon' weapon.id %}'>{{ weapon.name }} [{{ weapon.type }}] <img src='{% static '/images' %}{{ weapon.img_URL }}'></a>"
@@ -94,7 +121,7 @@
         {% endfor %}
     </div>
     
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-3 offset-3">
         <p class="text-info">{{form.weapon_one.label}}</p>
         {{ form.weapon_one }}
@@ -103,10 +130,17 @@
         <p class="text-info">{{form.weapon_two.label}}</p>
         {{ form.weapon_two }}
         </div>
-    </div>
+    </div> -->
 
-    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
-        <h3 class="text-info">Shields</h3>
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
+        <h1 class="text-info">Shields</h1>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+        <select class="btn btn-outline-success" name="shield" id="shield-menu">
+            {% for shield in shields %}
+            <option value="{{ shield.id }}">{{ shield.name }}</option>
+            {% endfor %}
+        </select><br /><br />
         {% for shield in shields %}
         <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
         title="{{ shield.name }} [{{ shield.type }}] <img src='{% static '/images' %}{{ shield.img_URL }}'>"
@@ -123,11 +157,18 @@
         Roll Timer: +{{ shield.roll }}s">{{ shield.name }}</a>
         {% endfor %}
     </div>
-        <p class="text-info">{{form.shield.label}}</p>
-        {{ form.shield }}
+        <!-- <p class="text-info">{{form.shield.label}}</p>
+        {{ form.shield }} -->
 
-    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
-        <h3 class="text-info">Helmets</h3>   
+        <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
+            <h1 class="text-info">Helmets</h1>
+        </div>
+        <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+            <select class="btn btn-outline-success" name="helm" id="helm-menu">
+                {% for helm in helmets %}
+                <option value="{{ helm.id }}">{{ helm.name }}</option>
+                {% endfor %}
+            </select><br /><br />  
         {% for helm in helmets %}
         <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
         title="{{ helm.name }} [{{ helm.type }}] <img src='{% static '/images' %}{{ helm.img_URL }}'>"
@@ -143,11 +184,18 @@
         Roll Timer: +{{ helm.roll }}s">{{ helm.name }}</a>
         {% endfor %}
     </div>
-        <p class="text-info">{{form.helm.label}}</p>
-        {{ form.helm }}
+        <!-- <p class="text-info">{{form.helm.label}}</p>
+        {{ form.helm }} -->
 
-    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">  
-        <h3 class="text-info">Chests</h3>
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
+        <h1 class="text-info">Chests</h1>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+        <select class="btn btn-outline-success" name="chest" id="chest-menu">
+            {% for chest in chests %}
+            <option value="{{ chest.id }}">{{ chest.name }}</option>
+            {% endfor %}
+        </select><br /><br />
         {% for chest in chests %}
         <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
         title="{{ chest.name }} [{{ chest.type }}] <img src='{% static '/images' %}{{ chest.img_URL }}'>"
@@ -163,11 +211,17 @@
         Roll Timer: +{{ chest.roll }}s">{{ chest.name }}</a>
         {% endfor %}
     </div>
-        <p class="text-info">{{form.chest.label}}</p>
-        {{ form.chest }}
 
-    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
-        <h3 class="text-info">Legs</h3>
+
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
+        <h1 class="text-info">Legs</h1>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+        <select class="btn btn-outline-success" name="leg" id="leg-menu">
+            {% for leg in legs %}
+            <option value="{{ leg.id }}">{{ leg.name }}</option>
+            {% endfor %}
+        </select><br /><br />
         {% for leg in legs %}
         <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
         title="{{ leg.name }} [{{ leg.type }}] <img src='{% static '/images' %}{{ leg.img_URL }}'>"
@@ -183,11 +237,38 @@
         Roll Timer: +{{ leg.roll }}s">{{ leg.name }}</a>
         {% endfor %}
     </div>
-        <p class="text-info">{{form.legs.label}}</p>
-        {{ form.legs }}
+        <!-- <p class="text-info">{{form.legs.label}}</p>
+        {{ form.legs }} -->
 
-    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
-        <h3 class="text-info">Rings</h3>   
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
+        <h1 class="text-info">Rings</h1>
+    </div>
+    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+        <div class="row">
+            <div class="col-3 offset-3">
+                <p class="text-info">{{form.ring_one.label}}</p>
+            </div>
+            <div class="col-3">
+                <p class="text-info">{{form.ring_two.label}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3 offset-3">
+        <select class="btn btn-outline-success" name="ring_one" id="ring-menu">
+            {% for ring in rings %}
+            <option value="{{ ring.id }}">{{ ring.name }}</option>
+            {% endfor %}
+        </select>
+            </div>
+            <div class="col-3">
+        <select class="btn btn-outline-success" name="ring_two" id="ring-menu">
+            {% for ring in rings %}
+            <option value="{{ ring.id }}">{{ ring.name }}</option>
+            {% endfor %}
+        </select>
+            </div>
+        </div>
+        <br /><br />   
         {% for ring in rings %}
         <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
         title="{{ ring.name }} [{{ ring.type }}] <img src='{% static '/images' %}{{ ring.img_URL }}'>"
@@ -204,7 +285,7 @@
         Roll Timer: +{{ ring.roll }}s">{{ ring.name }}</a>
         {% endfor %}
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-3 offset-3">
         <p class="text-info">{{form.ring_one.label}}</p>
         {{ form.ring_one }}
@@ -213,11 +294,18 @@
         <p class="text-info">{{form.ring_two.label}}</p>
         {{ form.ring_two }}
         </div>
+    </div> -->
+
+
+    <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
+        <h1 class="text-info">Amulets</h1>
     </div>
-
-
-    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
-        <h3 class="text-info">Amulets</h3>    
+    <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+        <select class="btn btn-outline-success" name="amulet" id="amulet-menu">
+            {% for amulet in amulets %}
+            <option value="{{ amulet.id }}">{{ amulet.name }}</option>
+            {% endfor %}
+        </select><br /><br />   
         {% for amulet in amulets %}
         <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
         title="{{ amulet.name }} [{{ amulet.type }}] <img src='{% static '/images' %}{{ amulet.img_URL }}'>"
@@ -234,12 +322,19 @@
         Roll Timer: +{{ amulet.roll }}s">{{ amulet.name }}</a>
         {% endfor %}
     </div>
-        <p class="text-info">{{form.amulet.label}}</p>
-        {{ form.amulet }}
+        <!-- <p class="text-info">{{form.amulet.label}}</p>
+        {{ form.amulet }} -->
 
 
-    <div class="col-10 bg-black text-center offset-1 p-4 my-5 border border-info">
-        <h3 class="text-info">Trinkets</h3>    
+        <div class="col-10 bg-black text-center offset-1 p-2 mt-5 border border-info">  
+            <h1 class="text-info">Trinkets</h1>
+        </div>
+        <div class="col-10 bg-black text-center offset-1 p-4 mb-5 border border-info">
+            <select class="btn btn-outline-success" name="trinket" id="trinket-menu">
+                {% for trinket in trinkets %}
+                <option value="{{ trinket.id }}">{{ trinket.name }}</option>
+                {% endfor %}
+            </select><br /><br />    
         {% for trinket in trinkets %}
         <a tabindex=0 type="button" class="btn btn-outline-info" data-bs-toggle="popover" 
         title="{{ trinket.name }} [{{ trinket.type }}] <img src='{% static '/images' %}{{ trinket.img_URL }}'>"
@@ -256,8 +351,8 @@
         Roll Timer: +{{ trinket.roll }}s">{{ trinket.name }}</a>
         {% endfor %}
     </div>
-        <p class="text-info">{{form.trinket.label}}</p>
-        {{ form.trinket }}
+        <!-- <p class="text-info">{{form.trinket.label}}</p>
+        {{ form.trinket }} -->
 
     <div class="row">
         <div class="col-3 offset-3">
